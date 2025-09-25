@@ -1,4 +1,4 @@
-# 🎨 Frontend - Sistema de Cadastro
+# 🎨 Frontend
 
 Este repositório contém a parte *visual* do sistema, desenvolvida em *HTML, CSS e JavaScript*.  
 Aqui está a interface onde o usuário interage, inserindo informações que serão enviadas ao backend.
