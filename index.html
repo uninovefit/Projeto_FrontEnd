@@ -1,214 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
-    <title>Formulário interativo</title>
-  </head>
-  <body>
-    <section class="containerPai">
-      <div class="card" id="card">
-        <div class="form-container login-container">
-          <div class="formlogin">
-            <h2>Faça Login<br />e entre para o nosso time</h2>
-            <form action="" id="form_login">
-              <div class="input-group">
-                <label for="perfil_login">Selecione seu perfil:</label>
-                <select id="perfil_login" required>
-                  <option value="">Tipo de usuário</option>
-                  <option value="alunos">Aluno</option>
-                  <option value="personais">Personal</option>
-                </select>
-              </div>
 
-              <div class="login_personal">
-                <div class="input-group personais-only">
-                  <input type="text"
-                  id="CREF"
-                  placeholder="CREF">
-                </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <title>Formulário interativo</title>
+</head>
 
-                <div class="input-group personais-only">
-                  <input 
-                  type="email"
-                  id="email_personal_login"
-                  placeholder="Digite seu email"
-                  />
-                </div>
-                
-                <div class="input-group personais-only">
-                  <input 
-                  type="password"
-                  id="senha_personal_login"
-                  placeholder="Digite sua senha"
-                  />
-                </div>
-                
-              </div>
-              
-              <div class="login_aluno">
-                <div class="input-group alunos-only">
-                  <input
-                    type="email"
-                    id="email-login"
-                    placeholder="Digite seu e-mail"
-                  />
-                </div>
-                <div class="input-group alunos-only">
-                  <input
-                    type="password"
-                    id="senha-login"
-                    placeholder="Digite sua senha"
-                  />
-                </div>
-
-              </div>
-              <button type="submit" class="botao">Login</button>
-            </form>
-
-            
-          </div>
-        </div>
-
-        <div class="form-container cadastro-container">
-          <div class="formCadastro">
-            <h2>Cadastro</h2>
-            <form id="form-cadastro">
-              <div class="input-group">
-                <select id="tipo-usuario-cadastro" required>
-                  <option value="">Selecione o tipo de usuário</option>
-                  <option value="alunos">Aluno</option>
-                  <option value="personais">Personal</option>
-                </select>
-              </div>
-
-              <div id="campos-cadastro" style="display: none">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    id="nome"
-                    placeholder="Nome completo"
-                    required
-                  />
-                </div>
-                <div class="input-group">
-                  <input
-                    type="number"
-                    id="idade"
-                    placeholder="Idade"
-                    required
-                  />
-                </div>
-                <div class="input-group alunos-only">
-                  <input
-                    type="number"
-                    step="0.1"
-                    id="peso"
-                    placeholder="Peso (kg)"
-                  />
-                </div>
-                <div class="input-group alunos-only">
-                  <input
-                    type="number"
-                    step="0.01"
-                    id="altura"
-                    placeholder="Altura (m)"
-                  />
-                </div>
-                <div class="input-group personais-only">
-                  <input
-                    type="text"
-                    id="estado"
-                    placeholder="Estado"
-                  />
-                </div>
-                <div class="input-group">
-                  <input
-                    type="text"
-                    id="cidade"
-                    placeholder="Cidade"
-                    required
-                  />
-                </div>
-                <div class="input-group">
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="E-mail"
-                    required
-                  />
-                </div>
-                <div class="input-group">
-                  <input
-                    type="number"
-                    id="celular"
-                    placeholder="Celular (opcional)"
-                  />
-                </div>
-                <div class="input-group alunos-only">
-                  <label>Frequenta academia?</label>
-                  <select id="frequentaAcademia">
-                    <option value="">Selecione</option>
-                    <option value="true">Sim</option>
-                    <option value="false">Não</option>
-                  </select>
-                </div>
-                <div class="input-group alunos-only">
-                  <input
-                    type="text"
-                    id="tempo-treino"
-                    placeholder="Tempo de treino (ex: 4 meses)"
-                  />
-                </div>
-                <div class="input-group personais-only">
-                  <input
-                    type="text"
-                    id="formacao-personal"
-                    placeholder="Formação"
-                  />
-                </div>
-                <div class="input-group personais-only">
-                  <input
-                    type="text"
-                    id="tempo-experiencia"
-                    placeholder="Tempo de experiência como personal"
-                  />
-                </div>
-                <button type="submit" class="botao">Cadastrar</button>
-
-                <p>ou entre com</p>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="overlay-container">
-          <div class="overlay">
-            <div class="overlay-panel overlay-left">
-              <h2>Já é Aluno?</h2>
-              <p>Acesse para dar continuidade aos seus treinos!</p>
-              <button class="ghost" id="LoginButton">Faça Login</button>
+<body>
+  <section class="containerPai">
+    <div class="card" id="card">
+      <div class="form-container login-container">
+        <div class="formlogin">
+          <h2>Login</h2>
+          <form id="form-login">
+            <div class="input-group">
+              <label for="perfil_login">Selecione seu perfil:</label>
+              <select id="tipo-usuario-login" required>
+                <option value="">Tipo de usuário</option>
+                <option value="Aluno">Aluno</option>
+                <option value="Personal">Personal</option>
+              </select>
             </div>
 
-            <div class="overlay-panel overlay-right">
-              <h2>Ainda não tem conta?</h2>
-              <p>Cadastre-se e comece sua transformação</p>
-              <button class="ghost" id="CadastroButton">Cadastre-se</button>
+            <div class="login_personal">
+
+              <div class="input-group personais-only">
+                <input type="email" id="email_personal_login" placeholder="Digite seu email" />
+              </div>
+
+              <div class="input-group personais-only">
+                <input type="password" id="senha_personal_login" placeholder="Digite sua senha" />
+              </div>
+
             </div>
+
+            <div class="login_aluno">
+              <div class="input-group alunos-only">
+                <input type="email" id="email-login" placeholder="Digite seu e-mail" />
+              </div>
+              <div class="input-group alunos-only">
+                <input type="password" id="senha-login" placeholder="Digite sua senha" />
+              </div>
+
+            </div>
+            <p id="error-message-login"></p>
+            <button type="submit" class="botao">Login</button>
+          </form>
+
+
+        </div>
+      </div>
+
+      <div class="form-container cadastro-container">
+        <div class="formCadastro">
+          <h2>Cadastro</h2>
+          <form id="form-cadastro">
+            <div class="input-group">
+              <select id="tipo-usuario-cadastro" required>
+                <option value="">Selecione o tipo de usuário</option>
+                <option value="Aluno">Aluno</option>
+                <option value="Personal">Personal</option>
+              </select>
+            </div>
+
+            <div id="campos-cadastro" style="display: none">
+              <div class="input-group">
+                <input type="text" id="nome" placeholder="Nome completo" required />
+              </div>
+              <div class="input-group personais-only">
+                <input type="text" id="cref" placeholder="CREF" />
+              </div>
+              <div class="input-group">
+                <input type="number" id="idade" placeholder="Idade" required />
+              </div>
+              <div class="input-group alunos-only">
+                <input type="number" step="0.1" id="peso" placeholder="Peso (kg)" />
+              </div>
+              <div class="input-group alunos-only">
+                <input type="number" step="0.01" id="altura" placeholder="Altura (m)" />
+              </div>
+              <div class="input-group">
+                <input type="text" id="estado" maxlength="2" placeholder="Estado (UF)" />
+              </div>
+              <div class="input-group">
+                <input type="text" id="cidade" placeholder="Cidade" required />
+              </div>
+              <div class="input-group">
+                <input type="email" id="email" placeholder="E-mail" required />
+              </div>
+
+              <div class="input-group">
+                <input type="password" id="senha" placeholder="Insira uma senha" required />
+              </div>
+              <div class="input-group">
+                <input type="password" id="confirma-senha" placeholder="Confirme a senha" required />
+              </div>
+
+              <div class="input-group">
+                <input type="number" id="celular" placeholder="Celular (opcional)" />
+              </div>
+              <div class="input-group alunos-only">
+                <label>Frequenta academia?</label>
+                <select id="frequenta-academia">
+                  <option value="">Selecione</option>
+                  <option value="Sim">Sim</option>
+                  <option value="Não">Não</option>
+                </select>
+              </div>
+              <div class="input-group alunos-only">
+                <input type="text" id="tempo-treino" placeholder="Tempo de treino (ex: 4 meses)" />
+              </div>
+              <div class="input-group personais-only">
+                <input type="text" id="formacao-personal" placeholder="Formação" />
+              </div>
+              <div class="input-group personais-only">
+                <input type="text" id="tempo-experiencia" placeholder="Tempo de experiência como personal" />
+              </div>
+              <div class="input-group personais-only">
+                <input type="text" id="tipo-cobranca" placeholder="Informe seu tipo de cobrança" />
+              </div>
+              <div class="input-group personais-only">
+                <input type="text" id="valor-cobranca" placeholder="Informe seu valor de cobança" />
+              </div>
+              <p id="error-message-cadastro"></p>
+              <p id="success-message-cadastro"></p>
+              <button type="submit" class="botao">Cadastrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h2>Já possui conta?</h2>
+            <button class="ghost" id="LoginButton">Faça Login</button>
+          </div>
+
+          <div class="overlay-panel overlay-right">
+            <h2>Ainda não tem conta?</h2>
+            <p>Cadastre-se agora!</p>
+            <button class="ghost" id="CadastroButton">Cadastre-se</button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <script src="script.js" defer></script>
-  </body>
+  <script src="script.js" defer></script>
+</body>
+
 </html>

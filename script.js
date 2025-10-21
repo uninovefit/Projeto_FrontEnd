@@ -1,7 +1,8 @@
 const card = document.getElementById("card");
 const cadastroButton = document.getElementById("CadastroButton");
 const loginButton = document.getElementById("LoginButton");
-const tipoUsuario = document.getElementById("tipo-usuario-login" && "tipo-usuario-cadastro");
+const tipo_usuario_cadastro = document.getElementById("tipo-usuario-cadastro");
+const tipo_usuario_login = document.getElementById("tipo-usuario-login");
 const camposCadastro = document.getElementById("campos-cadastro");
 
 cadastroButton.addEventListener("click", () => {
@@ -12,16 +13,17 @@ loginButton.addEventListener("click", () => {
   card.classList.remove("right-panel-active");
 });
 
-tipoUsuario.addEventListener("change", () => {
+// Alterar campos cadastro
+tipo_usuario_cadastro.addEventListener("change", () => {
   const alunoCampos = document.querySelectorAll(".alunos-only");
   const personalCampos = document.querySelectorAll(".personais-only");
 
   camposCadastro.style.display = "block";
 
-  if (tipoUsuario.value === "alunos") {
+  if (tipo_usuario_cadastro.value === "Aluno") {
     alunoCampos.forEach((campo) => (campo.style.display = "block"));
     personalCampos.forEach((campo) => (campo.style.display = "none"));
-  } else if (tipoUsuario.value === "personais") {
+  } else if (tipo_usuario_cadastro.value === "Personal") {
     alunoCampos.forEach((campo) => (campo.style.display = "none"));
     personalCampos.forEach((campo) => (campo.style.display = "block"));
   } else {
@@ -29,261 +31,223 @@ tipoUsuario.addEventListener("change", () => {
   }
 });
 
-
-
-const perfil_selecionado = document.getElementById("perfil_login");
-
+// Alterar campos login
 const alunoCampos = document.querySelector(".login_aluno");
 const personalCampos = document.querySelector(".login_personal");
-
 
 alunoCampos.style.display = "none";
 personalCampos.style.display = "none";
 
-
-perfil_selecionado.addEventListener("change", () => {
-  const perfil = perfil_selecionado.value;
-
+tipo_usuario_login.addEventListener("change", () => {
+  const perfil = tipo_usuario_login.value;
 
   alunoCampos.style.display = "none";
   personalCampos.style.display = "none";
 
-  
-  if (perfil === "alunos") {
+
+  if (perfil === "Aluno") {
     alunoCampos.style.display = "block";
-  } else if (perfil === "personais") {
+  } else if (perfil === "Personal") {
     personalCampos.style.display = "block";
   }
 });
 
+// Fluxo de cadastro e login
 
-const form = document.getElementById("tipo-usuario-login"); 
+// Login
+const form_login = document.getElementById("form-login");
 
-
-form.onsubmit = async (e) => {
+form_login.addEventListener("submit", async (e) => {
   e.preventDefault();
-  
-  const tipoUsuario = document.getElementById("tipo-usuario-login").value;
-  
-  if (tipoUsuario === 'personais') {
-    
+
+  const tipo_usuario_login = document.getElementById("tipo-usuario-login").value;
+
+  if (tipo_usuario_login === 'Personal') {
+
     const email = document.getElementById("email-login").value;
     const senha = document.getElementById("senha-login").value;
-    
-    const response = await fetch("http://localhost:8081/personais", {
+
+    fetch("http://localhost:8081/personais/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-          email: email,
-          senha: senha
-        }),
-      }).then((response) => response.json())
-      .then(data => console.log(data));
-      
-      
-      console.log(response);
-      
-    }
-    
-    if (tipoUsuario === 'alunos') {
-      
-      email = document.getElementById("email-login").value,
-      senha = document.getElementById("senha-login").value
-      
-      const login = {
         email: email,
         senha: senha
-      };
-      
-      fetch("http://localhost:8081/alunos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(login)
-        
-      }).then((response) => response.json())
-      .then(login => console.log(login));
-      
-      console.log(login);
+      }),
+    }).then((response) => response.json())
+      .then(data => {
+        if (data.message.includes("E-mail e/ou senha são inválidos.")) {
+          document.getElementById('error-message-login').textContent = data.message
+          return;
+        }
+
+        window.location.href = "/personal/dashboard.html"
+      });
+  }
+
+  if (tipo_usuario_login === 'Aluno') {
+
+    email = document.getElementById("email-login").value,
+      senha = document.getElementById("senha-login").value
+
+    fetch("http://localhost:8081/alunos/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        senha
+      })
+    }).then((response) => response.json())
+      .then(data => {
+        if (data.message.includes("E-mail e/ou senha são inválidos.")) {
+          document.getElementById('error-message').textContent = data.message
+          return;
+        }
+
+        window.location.href = "/aluno/dashboard.html"
+      });
+  }
+});
+
+//Cadastro
+
+const form_cadastro = document.getElementById("form-cadastro");
+
+form_cadastro.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const tipoUsuario = document.getElementById("tipo-usuario-cadastro").value;
+
+  if (tipoUsuario === 'Personal') {
+
+    const nome = document.getElementById("nome").value;
+    const idade = document.getElementById("idade").value;
+    const estado = document.getElementById("estado").value;
+    const cidade = document.getElementById("cidade").value;
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    const confirma_senha = document.getElementById("confirma-senha").value;
+    const celular = document.getElementById("celular").value;
+    const formacao = document.getElementById("formacao-personal").value;
+    const tempo_experiencia = document.getElementById("tempo-experiencia").value;
+    const cref = document.getElementById("cref").value;
+    const tipo_cobranca = document.getElementById("tipo-cobranca").value;
+    const valor_cobranca = document.getElementById("valor-cobranca").value;
+
+    if (senha !== confirma_senha) {
+      document.getElementById('error-message-cadastro').textContent = "As senhas não coincidem."
+      return;
     }
-  };
 
-  
-  
-  
-  const formCadastro = document.getElementById("tipo-usuario-cadastro");
-  
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    
-    const tipoUsuario = document.getElementById("tipo-usuario-cadastro").value;
-    
-    if (tipoUsuario === 'personais') {
-      
-      const nome = document.getElementById("nome").value;
-      const idade = document.getElementById("idade").value;
-      const estado = document.getElementById("estado").value;
-      const cidade = document.getElementById("cidade").value;
-      const email = document.getElementById("email").value;
-      const celular = document.getElementById("celular").value;
-      const formacao = document.getElementById("formacao-personal").value;
-      const tempo_experiencia = document.getElementById("tempo-experiencia").value;
-      
-      const response = await fetch("http://localhost:8081/personais", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nome: nome,
-          idade: idade,
-          estado: estado,
-          cidade: cidade,
-          email: email,
-          celular: celular,
-          formacao: formacao,
-          tempo_experiencia: tempo_experiencia
-        }),
-      }).then((response) => response.json())
-      .then(data => console.log(data));
-      
-      console.log(response);
+    fetch("http://localhost:8081/personais", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeCompleto: nome,
+        idade: idade,
+        estado: estado,
+        cidade: cidade,
+        email: email,
+        senha: senha,
+        celular: celular,
+        formacao: formacao,
+        tempoExperiencia: tempo_experiencia,
+        cref: cref,
+        tipoCobranca: tipo_cobranca,
+        valorCobranca: valor_cobranca
+      }),
+    }).then((response) => response.json())
+      .then(data => {
+        document.getElementById("error-message-cadastro").textContent = ""
+        if (data.errors) {
+          document.getElementById("error-message-cadastro").innerHTML = data.errors.map(el => el).join("<br>")
+          return;
+        }
+
+        if (data.error) {
+          document.getElementById("error-message-cadastro").textContent = data.error
+          return;
+        }
+
+        if (data.message.includes("Cadastro de usuário realizado com sucesso!")) {
+          document.getElementById("success-message-cadastro").textContent = data.message
+
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
+        }
+      });
+
+  }
+
+  if (tipoUsuario === 'Aluno') {
+
+    const nome = document.getElementById("nome").value;
+    const idade = document.getElementById("idade").value;
+    const peso = document.getElementById("peso").value;
+    const altura = document.getElementById("altura").value;
+    const estado = document.getElementById("estado").value;
+    const cidade = document.getElementById("cidade").value;
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    const confirma_senha = document.getElementById("confirma-senha").value;
+    const celular = document.getElementById("celular").value;
+    const tempo_treino = document.getElementById("tempo-treino").value;
+    const frequenta_academia = document.getElementById("frequenta-academia").value;
+
+    if (senha !== confirma_senha) {
+      document.getElementById('error-message-cadastro').textContent = "As senhas não coincidem."
+      return;
     }
-    
-    
-    if (tipoUsuario === 'alunos'){
-      
-      const nome = document.getElementById("nome").value;
-      const idade = document.getElementById("idade").value;
-      const peso = document.getElementById("peso").value;
-      const altura = document.getElementById("altura").value;
-      const cidade = document.getElementById("cidade").value;
-      const email = document.getElementById("email").value;
-      const celular = document.getElementById("celular").value;
-      const tempo_treino = document.getElementById("tempo-treino").value;
-      
-      const response = await fetch("http://localhost:8081/alunos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nome: nome,
-          idade: idade,
-          peso: peso,
-          altura: altura,
-          cidade: cidade,
-          email: email,
-          celular: celular,
-          tempo_treino: tempo_treino
-        }),
-      }).then((response) => response.json())
-      .then(data => console.log(data));
-      
-      console.log(response);
-    }
-  };
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  // Protocolo RPC > Remote Procedure Call
-  // Websocket
-  // protocolo tcp/ip / udp
-  
-  // PROTOCOLO HTTP > Protocolo de rede
-  
-  // GET > Listar dados > Parametros ou Query
-  // POST > Criar dados | Login
-  // PUT > Atualizar dados
-  // PATCH > Atualizar apenas campos especificos
-  // DELETE > Deletar dados > Parametros ou Query ?nome=tal&idade=tal
-  
-  // Status Code
-  
-  // 1xx > Informativo
-  // 2xx > Sucesso 200 OK 201 created
-  // 3xx > Redirecionamento
-  // 4xx > Erro cliente 400 bad request | 401 unauthorized | 403 forbidden | 404 not found
-  // 5xx > Erro servidor
-  
-  // 500 Ocorreu um erro inesperado.
-  
-  // Axios
-  // Fetch Api
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
+    fetch("http://localhost:8081/alunos", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeCompleto: nome,
+        idade: idade,
+        peso: peso,
+        altura: altura,
+        estado: estado,
+        cidade: cidade,
+        email: email,
+        senha: senha,
+        celular: celular,
+        frequentaAcademia: frequenta_academia,
+        tempoTreino: tempo_treino
+      }),
+    }).then((response) => response.json())
+      .then(data => {
+        document.getElementById("error-message-cadastro").textContent = ""
+        if (data.errors) {
+          document.getElementById("error-message-cadastro").innerHTML = data.errors.map(el => el).join("<br>")
+          return;
+        }
 
+        if (data.error) {
+          document.getElementById("error-message-cadastro").textContent = data.error
+          return;
+        }
 
+        if (data.message.includes("Cadastro de usuário realizado com sucesso!")) {
+          document.getElementById("success-message-cadastro").textContent = data.message
 
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
+        }
+      });
 
-//   if (tipoUsuario === "personal") {
-//     const nome = document.getElementById("nome").value;
-//     const idade = document.getElementById("idade").value;
-//     const estado = document.getElementById("estado-personal").value;
-//     const cidade = document.getElementById("cidade-aluno").value;
-//     const email = document.getElementById("email-aluno").value;
-//     const celular = document.getElementById("celular-aluno").value;
-//     const formacao = document.getElementById("formacao-personal").value;
-//     const tempo_experiencia =
-//       document.getElementById("tempo-experiencia").value;
-
-//     console.log("Cadastro personal");
-
-//     axios
-//       .post("http://localhost:8081/personais", {
-  //         nome: nome,
-  //         idade: idade,
-  //         estado: estado,
-  //         cidade: cidade,
-  //         email: email,
-  //         celular: celular,
-  //         formacao: formacao,
-  //         tempo_experiencia: tempo_experiencia,
-//       })
-//       .then((res) => console.log(res))
-//       .catch((error) => console.log("Erro ao fazer o Cadastro:", error));
-//   }
-//   if (tipoUsuario === "aluno") {
-//     const nome = document.getElementById("nome-aluno").value;
-//     const idade = document.getElementById("idade-aluno").value;
-//     const peso = document.getElementById("peso-aluno").value;
-//     const altura = document.getElementById("altura-aluno").value;
-//     const cidade = document.getElementById("cidade-aluno").value;
-//     const email = document.getElementById("email-aluno").value;
-//     const celular = document.getElementById("celular-aluno").value;
-//     const tempo_treino = document.getElementById("tempo-treino").value;
-
-//     console.log("Cadastro aluno");
-
-//     axios
-//       .post("http://localhost:8081/alunos", {
-//         nome: nome,
-//         idade: idade,
-//         peso: peso,
-//         altura: altura,
-//         cidade: cidade,
-//         email: email,
-//         celular: celular,
-//         tempo_treino: tempo_treino,
-//       })
-//       .then((res) => console.log("efetuado", res))
-//       .catch((error) => console.log("Erro ao fazer o Cadastro:", error));
-//   }
-// };
+  }
+});
