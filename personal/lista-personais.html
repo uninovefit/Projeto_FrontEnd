@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UninoveFit - Personais</title>
+</head>
+
+<body>
+    <header>
+        <img src="assets/logo.jpg" alt="Logo UninoveFit" />
+        <div class="menu">
+            <button>Início</button>
+            <button>Perfil</button>
+            <button>Sair</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Busque por CREF, estado ou cidade">
+            <button onclick="buscarPersonais()" class="btn">Buscar</button>
+        </div>
+
+        <div class="lista-container">
+            <h2>Lista de personais</h2>
+            <div id="lista-personais">
+                <!-- personais serão inseridos aqui -->
+            </div>
+
+            <dialog class="card-personal" id="detalhes-personal">
+            </dialog>
+        </div>
+    </main>
+
+    <script>
+        async function carregarPersonais() {
+            try {
+                const resposta = await fetch("http://localhost:8081/personais", {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const personais = await resposta.json();
+                listarPersonais(personais)
+
+            } catch (erro) {
+                console.error("Erro ao carregar personais:", erro);
+            }
+        }
+
+        async function selecionarPersonal(personal) {
+            await fetch("http://localhost:8081/alunos", {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    personalId: personal.id
+                })
+            });
+        }
+
+        async function buscarPersonais() {
+            const termo = document.getElementById("search").value.trim();
+
+            if (termo === "") {
+                return;
+            }
+
+            if(termo.length <= 1){
+                return;
+            }
+
+            let query = "";
+            
+            if(Number(termo) !== NaN){
+                query = `?cref=${termo}`
+            }
+
+            if(Number(termo) === NaN && termo.length === 2){
+                query = `?estado=${termo}`
+            }
+
+            if(Number(termo) === NaN && termo.length > 2){
+                query = `?cidade=${termo}`
+            }
+            
+            const resposta = await fetch(`http://localhost:8081/personais${query}`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const personais = await resposta.json();
+            listarPersonais(personais)
+
+        }
+
+        async function listarPersonais(personais) {
+
+            const lista = document.getElementById("lista-personais");
+
+            lista.innerHTML = "";
+
+            personais.forEach(personal => {
+                const item = document.createElement("div");
+                item.className = "personal-item";
+
+                const nome = document.createElement("p");
+                nome.className = "personal-nome";
+                nome.textContent = personal.nomeCompleto;
+
+                const botoes = document.createElement("div");
+
+                const verPerfil = document.createElement("button");
+                verPerfil.className = "btn";
+                verPerfil.textContent = "Ver Perfil";
+                verPerfil.onclick = () => {
+                    const dialog = document.getElementById("detalhes-personal");
+                    dialog.innerHTML = "";
+
+                    const titulo = document.createElement("h2");
+                    titulo.className = 'card-header'
+                    titulo.textContent = 'Detalhes de ' + personal.nomeCompleto;
+                    dialog.appendChild(titulo);
+
+                    const subtitulo = document.createElement("p");
+                    subtitulo.textContent = "Informações de contato serão liberadas ao selecionar o personal.";
+                    subtitulo.style.textAlign = "center"
+                    dialog.appendChild(subtitulo);
+
+                    const campos = [
+                        ["Idade", personal.idade],
+                        ["Estado", personal.estado],
+                        ["Cidade", personal.cidade],
+                        ["Formação", personal.formacao],
+                        ["Tempo de experiência (anos)", personal.tempoExperiencia],
+                        ["CREF", personal.cref],
+                        ["Tipo de cobrança", personal.tipoCobranca],
+                        ["Valor da cobrança", personal.valorCobranca]
+                    ];
+
+                    const divCampos = document.createElement("div")
+                    divCampos.className = 'card-content'
+                    campos.forEach(([label, valor]) => {
+                        const div = document.createElement("div");
+                        div.className = "field";
+                        div.innerHTML = `<label>${label}</label><span>${valor || "-"}</span>`;
+                        divCampos.appendChild(div);
+                    });
+                    dialog.appendChild(divCampos)
+
+                    const menu = document.createElement("menu");
+                    const btnFechar = document.createElement("button");
+                    btnFechar.className = "btn";
+                    btnFechar.textContent = "Fechar";
+                    btnFechar.onclick = () => {
+                        dialog.close()
+                    }
+
+                    const btnEscolherPersonal = document.createElement("button");
+                    btnEscolherPersonal.className = "btn";
+                    btnEscolherPersonal.textContent = "Escolher personal";
+                    btnEscolherPersonal.onclick = () => {
+                        if (confirm("Deseja selecionar este instrutor para ser o seu personal?")) {
+                            selecionarPersonal(personal)
+                        }
+                    }
+
+                    menu.appendChild(btnEscolherPersonal);
+                    menu.appendChild(btnFechar);
+
+                    dialog.appendChild(menu);
+                    dialog.showModal();
+                };
+
+                const selecionar = document.createElement("button");
+                selecionar.className = "btn";
+                selecionar.textContent = "Escolher personal";
+                selecionar.onclick = () => {
+                    if (confirm("Deseja selecionar este instrutor para ser o seu personal?")) {
+                        selecionarPersonal(personal)
+                    }
+                };
+
+                item.appendChild(nome);
+                botoes.appendChild(verPerfil);
+                botoes.appendChild(selecionar);
+                item.appendChild(botoes)
+
+                lista.appendChild(item);
+            });
+
+        }
+
+        carregarPersonais();
+    </script>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #6e9d88;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 30px;
+    }
+
+    header img {
+        height: 40px;
+    }
+
+    .menu {
+        display: flex;
+        gap: 10px;
+    }
+
+    .menu button {
+        background-color: #86b19e;
+        border: none;
+        color: white;
+        padding: 8px 18px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .menu button:hover {
+        background-color: #5d8774;
+    }
+
+    main {
+        padding: 40px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    #search {
+        display: inline-block;
+        padding: 8px 30px;
+        border: 2px solid #ccc;
+        border-radius: 15px;
+        font-size: 18px;
+        width: 50%;
+    }
+
+    .lista-container {
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        display: inline-block;
+        padding: 20px 40px;
+        text-align: left;
+    }
+
+    .lista-container h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .personal-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .personal-nome {
+        font-weight: 500;
+    }
+
+    dialog {
+        border: none;
+        border-radius: 10px;
+        padding: 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        width: 380px;
+        max-width: 90%;
+        animation: fadeIn 0.25s ease;
+    }
+
+    dialog {
+        padding: 20px;
+    }
+
+    dialog h3 {
+        margin-top: 0;
+        color: #6e9d88;
+    }
+
+    dialog p {
+        margin: 6px 0;
+        font-size: 15px;
+    }
+
+    menu {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 15px;
+    }
+
+    .btn {
+        background: #6e9d88;
+        color: #fff;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+        margin: 0 5px;
+    }
+
+    .btn:hover {
+        background: #588b74;
+    }
+
+    .card-personal {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        max-width: 700px;
+        width: 100%;
+        overflow: hidden;
+        animation: fadeIn 0.4s ease;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #6e9d88, #86b19e);
+        color: #fff;
+        padding: 24px;
+        text-align: center;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .card-content {
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 24px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 10px 14px;
+        background: #f9fafc;
+        border-radius: 10px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field label {
+        font-size: 0.85rem;
+        color: #777;
+        font-weight: 500;
+    }
+
+    .field span {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #222;
+    }
+
+    @media (max-width: 600px) {
+        .card-content {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+</html>

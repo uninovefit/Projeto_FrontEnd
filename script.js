@@ -109,7 +109,7 @@ form_login.addEventListener("submit", async (e) => {
           return;
         }
 
-        window.location.href = "/aluno/dashboard.html"
+        window.location.href = "/personal/lista-personais.html"
       });
   }
 });
