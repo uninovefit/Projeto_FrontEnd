@@ -244,32 +244,10 @@ button.ghost:hover {
     font-weight: 700;
 }
 
-/* Ícones de redes sociais */
-.social-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 5px;
-}
-
-.social-icons a {
-    text-decoration: none;
-}
-
-.social-icons i {
-    font-size: 20px;
-    color: gray;
-    transition: color 0.3s ease;
-}
-
-.social-icons i:hover {
-    color: lightgray;
-}
 
 /* Opções */
-
-.aluno-only,
-.personal-only {
+/* 
+.alunos-only,
+.personais-only {
   display: none;
-}
+} */
