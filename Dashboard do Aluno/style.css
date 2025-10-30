@@ -1,0 +1,266 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: #4a4a4a;
+}
+
+/*Estilo do cabeçalho */
+header {
+    background-color: #648773;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px; 
+    border-radius: 0 0 12px 12px; 
+}
+
+/* Logo */
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.logo i {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.logo span {
+    font-size: 20px;
+}
+
+/* Botões de navegação */
+nav button {
+    background-color: #89908b71;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+nav button:hover {
+    background-color: #8ac096;
+}
+
+/* área Principal */
+main {
+    padding: 30px 40px;
+}
+
+.personal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 40px;
+}
+
+/* Botão Remover */
+.btn-remover {
+    background-color: #89908b71;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-remover:hover {
+    background-color: #8ac096;
+}
+
+/* Estilo do container dos cards */
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 150px;
+    margin-top: 15px;
+}
+
+/*Cards de peso e água */
+.card {
+    width: 230px; 
+    background-color: #d9d9d9a4; 
+    border-radius: 15px;
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Icones (balança e garrafa de água */
+.icon-wrapper {
+    background-color: #e6e6e6; 
+    border-radius: 5px; 
+    padding: 10px; 
+    margin-right: 20px; 
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    min-width: 55px;
+    height: 55px;
+}
+
+.icon-wrapper i {
+    font-size:50px;
+    color: #4a4a4a;
+}
+
+.card .info {
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start; 
+}
+
+.card .info h3 {
+    margin: 0; 
+    font-weight: 600;
+    font-size: 18px; 
+    color: #4a4a4a;
+    line-height: 1.2;
+}
+
+.card .info p {
+    margin: 3px 0 0 0; 
+    font-weight: 400; 
+    font-size: 16px; 
+    color: #4a4a4a; 
+    line-height: 1.2;
+}
+
+/* Botão 'Ir para treinos */
+.btn-treinos {
+    background-color: #a8d5b4;
+    color: #1e1e11;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 55px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-treinos:hover {
+    background-color: #8ac096;
+}
+
+/* Metas e Progresso */
+.metas-progresso {
+    padding: 0 40px;
+    margin-top: 15px;
+}
+
+.section-title-bar {
+    background-color: #78ab8e;
+    padding: 12px 20px;
+    border-radius: 14px;
+    width: 100%;
+    margin: 0 0 10px 0;
+    color: #000;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.section-title-bar h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.progresso-cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    background-color: #fafafa;
+    border-radius: 18px;
+    padding: 48px 60px;
+    margin-top: 10px;
+    box-shadow: none;
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.progresso-card {
+    background-color: transparent;
+    border-radius: 20px;
+    width: 480px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: none;
+}
+
+.progresso-card h3 {
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e1e11;
+    padding: 18px 0 6px 0;
+}
+
+.progresso-card .inner-content {
+    background-color: #eaeaea;
+    border-radius: 14px;
+    padding: 77px 28px;
+    width: 100%;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    box-sizing: border-box;
+}
+
+.btn-historico {
+    background-color: #9b9b9b;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 9px 10px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 40px);
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto;
+}
+
+.btn-historico:hover {
+    background-color: #8c8c8c;
+}
+
+.btn-historico i {
+    font-size: 14px;
+}
+
+/* Texto do Próximo Treino */
+.progresso-card.proximos p {
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+    color: #4a4a4a;
+    padding: 6px 0;
+}
+
+
+
