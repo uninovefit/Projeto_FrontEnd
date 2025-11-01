@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -9,15 +9,13 @@ body {
     background-color: #f8f8f8;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #648773;
-    padding: 18px 40px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+header {
+    background-color: #6e9d88;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
 }
 
 .header .logo {
@@ -36,19 +34,25 @@ body {
     margin-left: 15px;
 }
 
-.nav-buttons button {
+nav {
+    display: flex;
+    gap: 10px;
+}
+
+nav a {
     margin-left: 15px;
+    text-decoration: none;
     padding: 8px 20px;
     border: none;
     border-radius: 20px;
     background-color: #a0b5a6;
-    color: #000;
+    color: white;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
 }
 
-.nav-buttons button:hover {
+nav a:hover {
     background-color: #8b9b8c;
 }
 
@@ -62,7 +66,7 @@ body {
     padding: 15px 25px;
     border-radius: 25px;
     background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-weight: bold;
     font-size: 18px;
 }
@@ -74,7 +78,7 @@ body {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .lista-alunos h2 {

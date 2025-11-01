@@ -109,7 +109,11 @@ form_login.addEventListener("submit", async (e) => {
           return;
         }
 
-        window.location.href = "/personal/lista-personais.html"
+        if(!data.personalId){
+          return window.location.href = "/personal/lista-personais.html"
+        } 
+
+        return window.location.href = "/aluno/dashboard.html"
       });
   }
 });

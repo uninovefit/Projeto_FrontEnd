@@ -1,14 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard do Aluno</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Dashboard aluno aqui</h1>
+
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="UNINOVE FIT" />
+        </div>
+        <nav>
+            <a href="/">Início</a>
+            <a href="/aluno/dashboard.html">Perfil</a>
+            <a href="/">Sair</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <div class="personal-header">
+            <h2>Personal:</h2>
+            <button class="btn-remover">Remover</button>
+        </div>
+
+        <div class="cards-container">
+
+            <div class="card card-peso">
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-weight-scale"></i>
+                </div>
+
+                <div class="info">
+                    <h3>Peso</h3>
+                    <p>58kg</p>
+                </div>
+            </div>
+
+            <div class="card card-agua">
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-bottle-water"></i>
+                </div>
+
+                <div class="info">
+                    <h3>2,1L de 3L</h3>
+                    <p>Água</p>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="btn-treinos">
+            Ir para treinos
+        </button>
+
+    </main>
+
+    <section class="metas-progresso">
+
+        <div class="section-title-bar">
+            <h2>Metas e Progresso</h2>
+        </div>
+
+        <div class="progresso-cards-container">
+
+            <div class="progresso-card historico">
+                <h3>Histórico de Treinos</h3>
+                <div class="inner-content">
+                    <button class="btn-historico">
+                        Ver histórico completo
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="progresso-card proximos">
+                <h3>Próximos treinos</h3>
+                <div class="inner-content">
+                    <p>Treino de Bíceps - 15/09 às 15h</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
 </body>
-<script>
-</script>
+
 </html>

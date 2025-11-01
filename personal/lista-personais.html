@@ -8,13 +8,15 @@
 </head>
 
 <body>
-    <header>
-        <img src="assets/logo.jpg" alt="Logo UninoveFit" />
-        <div class="menu">
-            <button>Início</button>
-            <button>Perfil</button>
-            <button>Sair</button>
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="UNINOVE FIT" />
         </div>
+        <nav>
+            <a href="/">Início</a>
+            <a href="/aluno/dashboard.html">Perfil</a>
+            <a href="/">Sair</a>
+        </nav>
     </header>
 
     <main>
@@ -25,9 +27,24 @@
 
         <div class="lista-container">
             <h2>Lista de personais</h2>
-            <div id="lista-personais">
-                <!-- personais serão inseridos aqui -->
-            </div>
+            <table id="lista-personais">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CREF</th>
+                        <th>Formação</th>
+                        <th>Tempo de experiência</th>
+                        <th>Tipo de cobrança</th>
+                        <th>Valor</th>
+                        <th>Estado</th>
+                        <th>Cidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- personais serão inseridos aqui -->
+                </tbody>
+            </table>
 
             <dialog class="card-personal" id="detalhes-personal">
             </dialog>
@@ -44,7 +61,16 @@
                         "Content-Type": "application/json",
                     },
                 });
-                const personais = await resposta.json();
+                const response = await resposta.json();
+                if (response.message === 'Não autenticado.') {
+                    return window.location.href = "/"
+                }
+
+                const personais = response
+                if (personais.length <= 0) {
+                    return document.getElementById("personais-length-message").textContent = 'Nenhum personal encontrado.'
+                }
+
                 listarPersonais(personais)
 
             } catch (erro) {
@@ -53,7 +79,7 @@
         }
 
         async function selecionarPersonal(personal) {
-            await fetch("http://localhost:8081/alunos", {
+            const response = await fetch("http://localhost:8081/alunos", {
                 method: "PATCH",
                 credentials: "include",
                 headers: {
@@ -63,6 +89,16 @@
                     personalId: personal.id
                 })
             });
+
+            if(response.ok){
+                return window.location.href = '/aluno/dashboard.html'
+            }
+            const res = await response.json()
+            if(res.message){
+                return alert(res.message)
+            }
+            return alert("Ocorreu um erro inesperado.")
+
         }
 
         async function buscarPersonais() {
@@ -72,24 +108,23 @@
                 return;
             }
 
-            if(termo.length <= 1){
+            if (termo.length <= 1) {
                 return;
             }
 
             let query = "";
-            
-            if(Number(termo) !== NaN){
-                query = `?cref=${termo}`
+
+            if (!isNaN(Number(termo))) {
+                // Se for número, buscar por CREF
+                query = `?cref=${termo}`;
+            } else if (termo.length === 2) {
+                // Se tiver 2 caracteres, buscar por estado
+                query = `?estado=${termo}`;
+            } else if (termo.length > 2) {
+                // Se tiver mais de 2 caracteres, buscar por cidade
+                query = `?cidade=${termo}`;
             }
 
-            if(Number(termo) === NaN && termo.length === 2){
-                query = `?estado=${termo}`
-            }
-
-            if(Number(termo) === NaN && termo.length > 2){
-                query = `?cidade=${termo}`
-            }
-            
             const resposta = await fetch(`http://localhost:8081/personais${query}`, {
                 method: "GET",
                 credentials: "include",
@@ -97,7 +132,13 @@
                     "Content-Type": "application/json",
                 },
             });
-            const personais = await resposta.json();
+
+            const response = await resposta.json();
+            if (response.message === 'Não autenticado.') {
+                return window.location.href = "/"
+            }
+
+            const personais = response
             listarPersonais(personais)
 
         }
@@ -106,17 +147,37 @@
 
             const lista = document.getElementById("lista-personais");
 
-            lista.innerHTML = "";
+            const tbody = lista.querySelector('tbody');
+            tbody.innerHTML = '';
 
             personais.forEach(personal => {
-                const item = document.createElement("div");
-                item.className = "personal-item";
+                const tr = document.createElement('tr');
 
-                const nome = document.createElement("p");
-                nome.className = "personal-nome";
-                nome.textContent = personal.nomeCompleto;
+                const tdNome = document.createElement('td');
+                tdNome.textContent = personal.nomeCompleto;
 
-                const botoes = document.createElement("div");
+                const tdCref = document.createElement('td');
+                tdCref.textContent = personal.cref;
+
+                const tdFormacao = document.createElement('td');
+                tdFormacao.textContent = personal.formacao;
+
+                const tdtempoExperiencia = document.createElement('td');
+                tdtempoExperiencia.textContent = personal.tempoExperiencia;
+
+                const tdTipoCobranca = document.createElement('td');
+                tdTipoCobranca.textContent = personal.tipoCobranca;
+
+                const tdValor = document.createElement('td');
+                tdValor.textContent = personal.valor;
+
+                const tdEstado = document.createElement('td');
+                tdEstado.textContent = personal.estado;
+
+                const tdCidade = document.createElement('td');
+                tdCidade.textContent = personal.cidade;
+
+                const tdAcoes = document.createElement('td');
 
                 const verPerfil = document.createElement("button");
                 verPerfil.className = "btn";
@@ -160,9 +221,7 @@
                     const btnFechar = document.createElement("button");
                     btnFechar.className = "btn";
                     btnFechar.textContent = "Fechar";
-                    btnFechar.onclick = () => {
-                        dialog.close()
-                    }
+                    btnFechar.onclick = () => dialog.close();
 
                     const btnEscolherPersonal = document.createElement("button");
                     btnEscolherPersonal.className = "btn";
@@ -189,12 +248,20 @@
                     }
                 };
 
-                item.appendChild(nome);
-                botoes.appendChild(verPerfil);
-                botoes.appendChild(selecionar);
-                item.appendChild(botoes)
+                tdAcoes.appendChild(verPerfil);
+                tdAcoes.appendChild(selecionar);
 
-                lista.appendChild(item);
+                tr.appendChild(tdNome);
+                tr.appendChild(tdCref);
+                tr.appendChild(tdFormacao);
+                tr.appendChild(tdtempoExperiencia);
+                tr.appendChild(tdTipoCobranca);
+                tr.appendChild(tdValor);
+                tr.appendChild(tdEstado);
+                tr.appendChild(tdCidade);
+                tr.appendChild(tdAcoes);
+
+                tbody.appendChild(tr);
             });
 
         }
@@ -219,28 +286,44 @@
         padding: 10px 30px;
     }
 
-    header img {
-        height: 40px;
+    .header .logo {
+        display: flex;
+        align-items: center;
     }
 
-    .menu {
+    .header .logo img {
+        height: 50px;
+        width: auto;
+    }
+
+    .header .logo span {
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 15px;
+    }
+
+    nav {
         display: flex;
         gap: 10px;
     }
 
-    .menu button {
-        background-color: #86b19e;
+    nav a {
+        margin-left: 15px;
+        text-decoration: none;
+        padding: 8px 20px;
         border: none;
-        color: white;
-        padding: 8px 18px;
         border-radius: 20px;
-        cursor: pointer;
+        background-color: #a0b5a6;
+        color: white;
         font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
     }
 
-    .menu button:hover {
-        background-color: #5d8774;
+    nav a:hover {
+        background-color: #8b9b8c;
     }
+
 
     main {
         padding: 40px 20px;
@@ -270,7 +353,59 @@
         border-radius: 10px;
         display: inline-block;
         padding: 20px 40px;
-        text-align: left;
+        text-align: center;
+    }
+
+    #lista-personais {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin-top: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    #lista-personais thead {
+        background-color: #6E9D88;
+        color: #fff;
+        text-align: center;
+    }
+
+    #lista-personais th,
+    #lista-personais td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    #lista-personais th {
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    #lista-personais tbody tr:hover {
+        background-color: #f3f9ff;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    #lista-personais tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    #lista-personais td:last-child {
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+
+        #lista-personais th,
+        #lista-personais td {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
     }
 
     .lista-container h2 {

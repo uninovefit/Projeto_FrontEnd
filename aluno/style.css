@@ -6,46 +6,50 @@ body {
 
 /*Estilo do cabeçalho */
 header {
-    background-color: #648773;
+    background-color: #6e9d88;
+    color: white;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    padding: 18px 40px; 
-    border-radius: 0 0 12px 12px; 
+    padding: 10px 30px;
 }
 
-/* Logo */
-.logo {
-    font-weight: bold;
-    font-size: 20px;
-    color: white;
+.header .logo {
     display: flex;
     align-items: center;
 }
 
-.logo i {
+.header .logo img {
+    height: 50px;
+    width: auto;
+}
+
+.header .logo span {
+    font-weight: bold;
     font-size: 24px;
-    margin-right: 8px;
+    margin-left: 15px;
 }
 
-.logo span {
-    font-size: 20px;
+nav {
+    display: flex;
+    gap: 10px;
 }
 
-/* Botões de navegação */
-nav button {
-    background-color: #89908b71;
-    color: white;
+nav a {
+    margin-left: 15px;
+    text-decoration: none;
+    padding: 8px 20px;
     border: none;
     border-radius: 20px;
-    padding: 8px 15px;
-    margin-left: 10px;
+    background-color: #a0b5a6;
+    color: white;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 500;
+    transition: background 0.3s;
 }
 
-nav button:hover {
-    background-color: #8ac096;
+nav a:hover {
+    background-color: #8b9b8c;
 }
 
 /* área Principal */
@@ -87,8 +91,8 @@ main {
 
 /*Cards de peso e água */
 .card {
-    width: 230px; 
-    background-color: #d9d9d9a4; 
+    width: 230px;
+    background-color: #d9d9d9a4;
     border-radius: 15px;
     padding: 20px 20px;
     display: flex;
@@ -99,11 +103,11 @@ main {
 
 /* Icones (balança e garrafa de água */
 .icon-wrapper {
-    background-color: #e6e6e6; 
-    border-radius: 5px; 
-    padding: 10px; 
-    margin-right: 20px; 
-    display: flex; 
+    background-color: #e6e6e6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
+    display: flex;
     align-items: center;
     justify-content: center;
     min-width: 55px;
@@ -111,30 +115,30 @@ main {
 }
 
 .icon-wrapper i {
-    font-size:50px;
+    font-size: 50px;
     color: #4a4a4a;
 }
 
 .card .info {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start; 
+    align-items: flex-start;
 }
 
 .card .info h3 {
-    margin: 0; 
+    margin: 0;
     font-weight: 600;
-    font-size: 18px; 
+    font-size: 18px;
     color: #4a4a4a;
     line-height: 1.2;
 }
 
 .card .info p {
-    margin: 3px 0 0 0; 
-    font-weight: 400; 
-    font-size: 16px; 
-    color: #4a4a4a; 
+    margin: 3px 0 0 0;
+    font-weight: 400;
+    font-size: 16px;
+    color: #4a4a4a;
     line-height: 1.2;
 }
 
@@ -261,6 +265,3 @@ main {
     color: #4a4a4a;
     padding: 6px 0;
 }
-
-
-
