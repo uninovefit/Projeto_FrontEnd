@@ -1,60 +1,7 @@
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    color: #4a4a4a;
-}
-
-/*Estilo do cabeçalho */
-header {
-    background-color: #6e9d88;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 30px;
-}
-
-.header .logo {
-    display: flex;
-    align-items: center;
-}
-
-.header .logo img {
-    height: 50px;
-    width: auto;
-}
-
-.header .logo span {
-    font-weight: bold;
-    font-size: 24px;
-    margin-left: 15px;
-}
-
-nav {
-    display: flex;
-    gap: 10px;
-}
-
-nav a {
-    margin-left: 15px;
-    text-decoration: none;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 20px;
-    background-color: #a0b5a6;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-nav a:hover {
-    background-color: #8b9b8c;
-}
-
 /* área Principal */
 main {
     padding: 30px 40px;
+    margin-top: 130px;
 }
 
 .personal-header {
@@ -63,21 +10,22 @@ main {
     align-items: center;
     margin-top: 20px;
     padding: 0 40px;
+    color: black;
 }
 
 /* Botão Remover */
-.btn-remover {
+.acoes-personal {
     background-color: #89908b71;
-    color: white;
+    color: black;
+    font-weight: bold;
     border: none;
     border-radius: 20px;
     padding: 10px 15px;
     font-size: 13px;
-    font-weight: 500;
     cursor: pointer;
 }
 
-.btn-remover:hover {
+.acoes-personal:hover {
     background-color: #8ac096;
 }
 
@@ -112,6 +60,19 @@ main {
     justify-content: center;
     min-width: 55px;
     height: 55px;
+}
+
+.add-consumoAgua {
+    margin-left: 20px;
+    padding: 5px;
+    border-radius: 50px;
+    cursor: pointer;
+    color: black;
+}
+
+.add-consumoAgua:hover {
+    background-color: #9b9494;
+    color: white;
 }
 
 .icon-wrapper i {
@@ -264,4 +225,22 @@ main {
     margin: 0;
     color: #4a4a4a;
     padding: 6px 0;
+}
+
+
+/* Modal detalhes personal */
+
+.modal-consumoAgua {
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: none;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    max-width: 700px;
+    width: 100%;
+    overflow: hidden
 }

@@ -1,0 +1,189 @@
+.btn {
+    background: #6e9d88;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin: 0 5px;
+}
+
+.btn:hover {
+    background: #588b74;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Modal Personal */
+
+.personal-nome {
+    font-weight: 500;
+}
+
+dialog {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 380px;
+    max-width: 90%;
+    animation: fadeIn 0.25s ease;
+    padding: 20px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+dialog h3 {
+    margin-top: 0;
+    color: #6e9d88;
+}
+
+dialog p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+menu {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.card-personal {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    max-width: 700px;
+    width: 100%;
+    overflow: hidden;
+    animation: fadeIn 0.4s ease;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #6e9d88, #86b19e);
+    color: #fff;
+    padding: 24px;
+    text-align: center;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.card-content {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #f9fafc;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field label {
+    font-size: 0.85rem;
+    color: #777;
+    font-weight: 500;
+}
+
+.field span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+}
+
+@media (max-width: 600px) {
+    .card-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background: #003d2b;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+header .image img {
+  width: 130px;
+  border-radius: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+header .barra_superior {
+  display: flex;
+  gap: 30px;
+}
+
+header .barra_superior a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  font-size: 1em;
+  transition: color 0.3s;
+}
+
+header .barra_superior a:hover {
+  color: #00ffb3;
+}
+
+header .botoes {
+  display: flex;
+  gap: 10px;
+}
+
+header .btn.acesso {
+  background-color: #555555;
+  color: #ffffff; 
+  border: none;
+  padding: 10px 22px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.3s;
+  text-decoration: none;
+}
+
+header .btn.acesso:hover {
+  background-color: #777777; 
+  transform: scale(1.05);
+}

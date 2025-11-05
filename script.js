@@ -82,7 +82,7 @@ form_login.addEventListener("submit", async (e) => {
           document.getElementById('error-message-login').textContent = data.message
           return;
         }
-
+        localStorage.setItem("tipo_usuario", 'personal');
         window.location.href = "/personal/dashboard.html"
       });
   }
@@ -105,13 +105,15 @@ form_login.addEventListener("submit", async (e) => {
     }).then((response) => response.json())
       .then(data => {
         if (data.message.includes("E-mail e/ou senha são inválidos.")) {
-          document.getElementById('error-message').textContent = data.message
+          document.getElementById('error-message-login').textContent = data.message
           return;
         }
 
         if(!data.personalId){
           return window.location.href = "/personal/lista-personais.html"
-        } 
+        }
+
+        localStorage.setItem("tipo_usuario", 'aluno');
 
         return window.location.href = "/aluno/dashboard.html"
       });

@@ -9,57 +9,11 @@ body {
     background-color: #f8f8f8;
 }
 
-header {
-    background-color: #6e9d88;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 30px;
-}
-
-.header .logo {
-    display: flex;
-    align-items: center;
-}
-
-.header .logo img {
-    height: 50px;
-    width: auto;
-}
-
-.header .logo span {
-    font-weight: bold;
-    font-size: 24px;
-    margin-left: 15px;
-}
-
-nav {
-    display: flex;
-    gap: 10px;
-}
-
-nav a {
-    margin-left: 15px;
-    text-decoration: none;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 20px;
-    background-color: #a0b5a6;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-nav a:hover {
-    background-color: #8b9b8c;
-}
-
 /* Quantidade de Alunos */
 .alunos-quantidade {
     width: 50%;
-    margin: 30px auto;
+    margin: 0 auto;
+    margin-top: 130px;
     display: flex;
     justify-content: space-between;
     align-items: center;

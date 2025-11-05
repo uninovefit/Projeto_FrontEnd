@@ -1,14 +1,4 @@
 /* Estrutura */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    color: white;
-    font-family: 'Poppins', sans-serif;
-}
 
 .containerPai {
     width: 100%;
@@ -119,7 +109,7 @@ select {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     color: white;
-    appearance: none; 
+    appearance: none;
 }
 
 /* Botões principais */
@@ -141,8 +131,6 @@ button.botao:hover {
 /* Estilo dos textos */
 p {
     margin-bottom: 10px;
-    width: auto;
-    max-width: 300px;
     font-size: 14px;
 }
 
@@ -163,8 +151,8 @@ h2 {
     color: lightgray;
 }
 
-.formlogin > p,
-.formCadastro > p {
+.formlogin>p,
+.formCadastro>p {
     margin-top: 10px;
     margin-bottom: 5px;
 }
@@ -177,7 +165,7 @@ h2 {
     width: 50%;
     height: 100%;
     overflow: hidden;
-    transition: transform 0.6s ease-in-out; 
+    transition: transform 0.6s ease-in-out;
     z-index: 100;
 }
 
@@ -194,7 +182,7 @@ h2 {
     height: 100%;
     width: 200%;
     transform: translateX(0);
-    transition: transform 0.6s ease-in-out; 
+    transition: transform 0.6s ease-in-out;
     display: flex;
 }
 
@@ -243,3 +231,4 @@ button.ghost:hover {
     color: black !important;
     font-weight: 700;
 }
+

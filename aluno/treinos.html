@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/style.css">
+    <script src="../loadHeader.js"></script>
+    <title>UninoveFit - Treinos</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- Header é carregado a partir do script "loadHeader" -->
+    </header>
+
+    <main>
+        <div class="lista-container">
+            <h2>Lista de treinos</h2>
+            <table id="lista-treinos">
+                <thead>
+                    <tr>
+                        <th>Treino</th>
+                        <th>Exercício</th>
+                        <th>Séries</th>
+                        <th>Repetições</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- treinos serão inseridos aqui -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+<script>
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const treinos = await buscarTreinos()
+        listarTreinos(treinos)
+    })
+
+    function listarTreinos(treinos) {
+
+        const lista = document.getElementById("lista-treinos");
+
+        const tbody = lista.querySelector('tbody');
+        tbody.innerHTML = '';
+
+        treinos.forEach(treino => {
+            const tr = document.createElement('tr');
+
+            const tdNomeTreino = document.createElement('td');
+            tdNomeTreino.textContent = treino.nomeTreino || '-';
+
+            const tdExercicio = document.createElement('td');
+            tdExercicio.textContent = treino.exercicio || '-';
+
+            const tdSeries = document.createElement('td');
+            tdSeries.textContent = treino.series || '-';
+
+            const tdRepeticoes = document.createElement('td');
+            tdRepeticoes.textContent = treino.repeticoes || '-';
+
+            const tdDescanso = document.createElement('td');
+            tdDescanso.textContent = treino.descanso || '-';
+
+
+            const tdAcoes = document.createElement('td');
+
+            const marcarConcluido = document.createElement("button");
+            marcarConcluido.className = "btn";
+            marcarConcluido.textContent = "Marcar como feito";
+            marcarConcluido.onclick = async () => {
+                if (confirm("Marcar este treino como feito?")) {
+                    const response = await fetch(`http://localhost:8081/alunos/me/treinos/${treino.id}`, {
+                        method: "DELETE",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    })
+                }
+            };
+
+            tdAcoes.appendChild(marcarConcluido)
+            tr.appendChild(tdNomeTreino);
+            tr.appendChild(tdExercicio);
+            tr.appendChild(tdSeries);
+            tr.appendChild(tdRepeticoes);
+            tr.appendChild(tdDescanso);
+            tr.appendChild(tdAcoes);
+
+            tbody.appendChild(tr);
+        });
+
+    }
+
+    async function buscarTreinos() {
+
+        const response = await fetch('http://localhost:8081/alunos/me/treinos', {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        const res = await response.json()
+        if (!response.ok && res.error || !response.ok && res.message) {
+
+            if (res.message && res.message === 'Não autenticado.') {
+                return window.location.href = '/'
+            }
+
+            if (res.message && res.message === 'Nenhum treino encontrado para este aluno.') {
+                const lista = document.querySelector('.lista-container');
+                const message = document.createElement('p');
+                message.textContent = res.message;
+                message.style.textAlign = 'center';
+                message.style.padding = '20px';
+                lista.appendChild(message);
+                return;
+            }
+
+            if (res.error) {
+                return alert(res.error)
+            }
+
+            return alert("Ocorreu um erro inesperado.")
+
+        }
+
+        return res;
+
+    }
+
+</script>
+
+<style>
+    .lista-container {
+        width: 100%;
+        color: black;
+        margin-top: 130px;
+        margin-bottom: 0;
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        display: inline-block;
+        padding: 20px 40px;
+        text-align: center;
+    }
+
+    #lista-treinos {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin-top: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    #lista-treinos thead {
+        background-color: #6E9D88;
+        color: #fff;
+        text-align: center;
+    }
+
+    #lista-treinos th,
+    #lista-treinos td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    #lista-treinos th {
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    #lista-treinos tbody tr:hover {
+        background-color: #f3f9ff;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    #lista-treinos tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    #lista-treinos td:last-child {
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+
+        #lista-treinos th,
+        #lista-treinos td {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+    }
+
+    .lista-container h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+</style>
+
+</html>

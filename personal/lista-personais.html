@@ -4,19 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <script src="../loadHeader.js"></script>
     <title>UninoveFit - Personais</title>
 </head>
 
 <body>
-    <header class="header">
-        <div class="logo">
-            <img src="logo.png" alt="UNINOVE FIT" />
-        </div>
-        <nav>
-            <a href="/">Início</a>
-            <a href="/aluno/dashboard.html">Perfil</a>
-            <a href="/">Sair</a>
-        </nav>
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- Header é carregado a partir do script "loadHeader" -->
     </header>
 
     <main>
@@ -52,6 +48,7 @@
     </main>
 
     <script>
+
         async function carregarPersonais() {
             try {
                 const resposta = await fetch("http://localhost:8081/personais", {
@@ -68,7 +65,13 @@
 
                 const personais = response
                 if (personais.length <= 0) {
-                    return document.getElementById("personais-length-message").textContent = 'Nenhum personal encontrado.'
+                    const lista = document.querySelector('.lista-container');
+                    const message = document.createElement('p');
+                    message.textContent = 'Nenhum personal encontrado.';
+                    message.style.textAlign = 'center';
+                    message.style.padding = '20px';
+                    lista.appendChild(message);
+                    return;
                 }
 
                 listarPersonais(personais)
@@ -90,11 +93,11 @@
                 })
             });
 
-            if(response.ok){
+            if (response.ok) {
                 return window.location.href = '/aluno/dashboard.html'
             }
             const res = await response.json()
-            if(res.message){
+            if (res.message) {
                 return alert(res.message)
             }
             return alert("Ocorreu um erro inesperado.")
@@ -169,7 +172,7 @@
                 tdTipoCobranca.textContent = personal.tipoCobranca;
 
                 const tdValor = document.createElement('td');
-                tdValor.textContent = personal.valor;
+                tdValor.textContent = personal.valorCobranca;
 
                 const tdEstado = document.createElement('td');
                 tdEstado.textContent = personal.estado;
@@ -270,66 +273,12 @@
     </script>
 </body>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #fff;
-        margin: 0;
-        padding: 0;
-    }
-
-    header {
-        background-color: #6e9d88;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 30px;
-    }
-
-    .header .logo {
-        display: flex;
-        align-items: center;
-    }
-
-    .header .logo img {
-        height: 50px;
-        width: auto;
-    }
-
-    .header .logo span {
-        font-weight: bold;
-        font-size: 24px;
-        margin-left: 15px;
-    }
-
-    nav {
-        display: flex;
-        gap: 10px;
-    }
-
-    nav a {
-        margin-left: 15px;
-        text-decoration: none;
-        padding: 8px 20px;
-        border: none;
-        border-radius: 20px;
-        background-color: #a0b5a6;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    nav a:hover {
-        background-color: #8b9b8c;
-    }
-
-
     main {
         padding: 40px 20px;
         text-align: center;
         display: flex;
         flex-direction: column;
+        margin-top: 130px;
     }
 
     .search-box {
@@ -350,6 +299,7 @@
 
     .lista-container {
         background-color: #f2f2f2;
+        color: black;
         border-radius: 10px;
         display: inline-block;
         padding: 20px 40px;
@@ -418,125 +368,6 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 10px;
-    }
-
-    .personal-nome {
-        font-weight: 500;
-    }
-
-    dialog {
-        border: none;
-        border-radius: 10px;
-        padding: 0;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        width: 380px;
-        max-width: 90%;
-        animation: fadeIn 0.25s ease;
-    }
-
-    dialog {
-        padding: 20px;
-    }
-
-    dialog h3 {
-        margin-top: 0;
-        color: #6e9d88;
-    }
-
-    dialog p {
-        margin: 6px 0;
-        font-size: 15px;
-    }
-
-    menu {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 15px;
-    }
-
-    .btn {
-        background: #6e9d88;
-        color: #fff;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: 0.2s;
-        margin: 0 5px;
-    }
-
-    .btn:hover {
-        background: #588b74;
-    }
-
-    .card-personal {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-        max-width: 700px;
-        width: 100%;
-        overflow: hidden;
-        animation: fadeIn 0.4s ease;
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, #6e9d88, #86b19e);
-        color: #fff;
-        padding: 24px;
-        text-align: center;
-    }
-
-    .card-header h2 {
-        margin: 0;
-        font-size: 1.8rem;
-        font-weight: 600;
-    }
-
-    .card-content {
-        padding: 24px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px 24px;
-    }
-
-    .field {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        padding: 10px 14px;
-        background: #f9fafc;
-        border-radius: 10px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .field label {
-        font-size: 0.85rem;
-        color: #777;
-        font-weight: 500;
-    }
-
-    .field span {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #222;
-    }
-
-    @media (max-width: 600px) {
-        .card-content {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
     }
 </style>
 

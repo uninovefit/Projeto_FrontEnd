@@ -4,35 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard do Aluno</title>
-
+    <title>UninoveFit - Aluno</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+    <link rel="stylesheet" href="/assets/styles/global.css">
     <link rel="stylesheet" href="style.css">
+    <script src="../loadHeader.js"></script>
 </head>
 
 <body>
 
-    <header class="header">
-        <div class="logo">
-            <img src="logo.png" alt="UNINOVE FIT" />
-        </div>
-        <nav>
-            <a href="/">Início</a>
-            <a href="/aluno/dashboard.html">Perfil</a>
-            <a href="/">Sair</a>
-        </nav>
+    <header class="header" id="header">
+        <!-- Header é carregado a partir da função "loadHeader" -->
     </header>
 
     <main>
 
         <div class="personal-header">
-            <h2>Personal:</h2>
-            <button class="btn-remover">Remover</button>
+            <h2 id='personal'></h2>
+            <div>
+                <button onclick="verPerfilPersonal()" class="btn">Ver detalhes</button>
+                <button onclick="removerPersonal()" class="btn">Remover</button>
+            </div>
         </div>
 
         <div class="cards-container">
@@ -44,7 +39,7 @@
 
                 <div class="info">
                     <h3>Peso</h3>
-                    <p>58kg</p>
+                    <p id="peso"></p>
                 </div>
             </div>
 
@@ -54,8 +49,11 @@
                 </div>
 
                 <div class="info">
-                    <h3>2,1L de 3L</h3>
-                    <p>Água</p>
+                    <h3>Água</h3>
+                    <p id="consumoAgua"></p>
+                </div>
+                <div onclick="document.getElementById('addConsumoAguaModal').show()" class="add-consumoAgua">
+                    <i class="fa-solid fa-plus"></i>
                 </div>
             </div>
 
@@ -91,11 +89,186 @@
                     <p>Treino de Bíceps - 15/09 às 15h</p>
                 </div>
             </div>
-
         </div>
 
+        <dialog class="modal-consumoAgua" id="addConsumoAguaModal">
+            <form id="form-add-agua" aria-label="Adicionar consumo de água">
+                <h3>Adicionar consumo de água</h3>
+                <br>
+                <div class="modal-body">
+                    <label for="agua-quantidade">Quantidade (ml)</label>
+                    <input id="agua-quantidade" name="quantidade" type="number" required inputmode="numeric"
+                        placeholder="Ex: 250" />
+                </div>
+
+                <p id="consumoAgua-returnMessage"></p>
+                <div class="modal-actions">
+                    <br>
+                    <button class="btn" type="button"
+                        onclick="document.getElementById('addConsumoAguaModal').close()">Cancelar</button>
+                    <button class="btn" type="submit">Adicionar</button>
+                </div>
+            </form>
+        </dialog>
+
+       
+
     </section>
+     <dialog class="card-personal" id="detalhes-personal">
+        </dialog>
 
 </body>
+<script>
+
+    let detalhesPersonal = {}
+
+    document.addEventListener('DOMContentLoaded', async () => {
+
+        const dadosAluno = await buscarDadosPerfilAluno()
+        if(!dadosAluno.personal){
+            window.location.href = '/personal/lista-personais.html'
+        }
+
+        detalhesPersonal = dadosAluno.personal
+        document.getElementById('personal').textContent = 'Personal: ' + dadosAluno.personal.nomeCompleto
+        document.getElementById('peso').textContent = dadosAluno.peso + ' kg'
+        document.getElementById('consumoAgua').textContent = dadosAluno.consumoAgua + ' ml'
+    })
+
+    async function buscarDadosPerfilAluno() {
+
+        const response = await fetch('http://localhost:8081/alunos/me', {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        const res = await response.json()
+        if (!response.ok && res.error || !response.ok && res.message) {
+
+            if (res.message && res.message === 'Não autenticado.') {
+                return window.location.href = '/'
+            }
+
+            if (res.error) {
+                return alert(res.error)
+            }
+
+            return alert("Ocorreu um erro inesperado.")
+
+        }
+
+        return res;
+    }
+
+    function verPerfilPersonal() {
+
+        const dialog = document.getElementById("detalhes-personal");
+        dialog.innerHTML = "";
+
+        const titulo = document.createElement("h2");
+        titulo.className = 'card-header'
+        titulo.textContent = 'Detalhes de ' + detalhesPersonal.nomeCompleto;
+        dialog.appendChild(titulo);
+
+        const campos = [
+            ["E-mail", detalhesPersonal.email],
+            ["Celular", detalhesPersonal.celular],
+            ["Idade", detalhesPersonal.idade],
+            ["Estado", detalhesPersonal.estado],
+            ["Cidade", detalhesPersonal.cidade],
+            ["Formação", detalhesPersonal.formacao],
+            ["Tempo de experiência (anos)", detalhesPersonal.tempoExperiencia],
+            ["CREF", detalhesPersonal.cref],
+            ["Tipo de cobrança", detalhesPersonal.tipoCobranca],
+            ["Valor da cobrança", detalhesPersonal.valorCobranca]
+        ];
+
+        const divCampos = document.createElement("div")
+        divCampos.className = 'card-content'
+        campos.forEach(([label, valor]) => {
+            const div = document.createElement("div");
+            div.className = "field";
+            div.innerHTML = `<label>${label}</label><span>${valor || "-"}</span>`;
+            divCampos.appendChild(div);
+        });
+        dialog.appendChild(divCampos)
+
+        const menu = document.createElement("menu");
+        const btnFechar = document.createElement("button");
+        btnFechar.className = "btn";
+        btnFechar.textContent = "Fechar";
+        btnFechar.onclick = () => dialog.close();
+
+        menu.appendChild(btnFechar);
+
+        dialog.appendChild(menu);
+        dialog.showModal();
+
+    }
+
+    async function removerPersonal() {
+
+        if (confirm("Deseja mesmo finalizar o contrato com este personal?")) {
+            const response = await fetch('http://localhost:8081/alunos', {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    personalId: null
+                })
+            })
+            const res = await response.json()
+            if (!response.ok && res.error) {
+                alert(res.error)
+            }
+
+            alert(`${detalhesPersonal.nomeCompleto} não é mais o seu personal, selecione um novo instrutor da nossa academia.`)
+            window.location.href = '/personal/lista-personais.html'
+        }
+
+    }
+
+    document.getElementById('form-add-agua').addEventListener('submit', async (e) => {
+        e.preventDefault()
+        const quantidade = document.getElementById('agua-quantidade').value
+
+        const response = await fetch('http://localhost:8081/alunos/consumoAgua', {
+            method: "PATCH",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                quantidade: quantidade
+            })
+        })
+        const res = await response.json()
+        if (!response.ok && res.error || !response.ok && res.message) {
+
+            if (res.message && res.message === 'Não autenticado.') {
+                return window.location.href = '/'
+            }
+
+            if (res.error) {
+                document.getElementById('consumoAgua-returnMessage').textContent = res.error
+            }
+
+            return document.getElementById('consumoAgua-returnMessage').textContent = 'Ocorreu um erro inesperado'
+        }
+
+        document.getElementById('consumoAgua-returnMessage').textContent = 'Consumo adicionado com sucesso!'
+        setTimeout(() => {
+            document.getElementById('addConsumoAguaModal').close()
+            document.getElementById('consumoAgua').textContent = res.novoConsumo + ' ml'
+        }, 1000)
+
+    })
+
+</script>
 
 </html>
