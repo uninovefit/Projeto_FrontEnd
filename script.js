@@ -108,12 +108,12 @@ form_login.addEventListener("submit", async (e) => {
           document.getElementById('error-message-login').textContent = data.message
           return;
         }
+        localStorage.setItem("tipo_usuario", 'aluno');
 
         if(!data.personalId){
           return window.location.href = "/personal/lista-personais.html"
         }
 
-        localStorage.setItem("tipo_usuario", 'aluno');
 
         return window.location.href = "/aluno/dashboard.html"
       });

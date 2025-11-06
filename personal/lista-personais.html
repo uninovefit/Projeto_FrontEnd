@@ -60,6 +60,7 @@
                 });
                 const response = await resposta.json();
                 if (response.message === 'Não autenticado.') {
+                    localStorage.removeItem('tipo_usuario')
                     return window.location.href = "/"
                 }
 
@@ -138,6 +139,7 @@
 
             const response = await resposta.json();
             if (response.message === 'Não autenticado.') {
+                localStorage.removeItem('tipo_usuario')
                 return window.location.href = "/"
             }
 

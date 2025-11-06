@@ -113,6 +113,7 @@
         if (!response.ok && res.error || !response.ok && res.message) {
 
             if (res.message && res.message === 'Não autenticado.') {
+                localStorage.removeItem('tipo_usuario')
                 return window.location.href = '/'
             }
 
