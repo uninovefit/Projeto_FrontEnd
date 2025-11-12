@@ -32,24 +32,12 @@ tipo_usuario_cadastro.addEventListener("change", () => {
 });
 
 // Alterar campos login
-const alunoCampos = document.querySelector(".login_aluno");
-const personalCampos = document.querySelector(".login_personal");
+const campos_login = document.querySelector(".login");
+campos_login.style.display = "none";
 
-alunoCampos.style.display = "none";
-personalCampos.style.display = "none";
 
 tipo_usuario_login.addEventListener("change", () => {
-  const perfil = tipo_usuario_login.value;
-
-  alunoCampos.style.display = "none";
-  personalCampos.style.display = "none";
-
-
-  if (perfil === "Aluno") {
-    alunoCampos.style.display = "block";
-  } else if (perfil === "Personal") {
-    personalCampos.style.display = "block";
-  }
+  campos_login.style.display = "block";
 });
 
 // Fluxo de cadastro e login
@@ -64,11 +52,12 @@ form_login.addEventListener("submit", async (e) => {
 
   if (tipo_usuario_login === 'Personal') {
 
-    const email = document.getElementById("email-login").value;
-    const senha = document.getElementById("senha-login").value;
+    const email = document.getElementById("email_login").value;
+    const senha = document.getElementById("senha_login").value;
 
     fetch("http://localhost:8081/personais/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -82,15 +71,19 @@ form_login.addEventListener("submit", async (e) => {
           document.getElementById('error-message-login').textContent = data.message
           return;
         }
-        localStorage.setItem("tipo_usuario", 'personal');
-        window.location.href = "/personal/dashboard.html"
+        if (data.message.includes("Login efetuado com sucesso.")) {
+          window.location.href = "/personal/dashboard.html"
+          localStorage.setItem("tipo_usuario", 'personal');
+          return;
+        }
+
       });
   }
 
   if (tipo_usuario_login === 'Aluno') {
 
-    email = document.getElementById("email-login").value,
-      senha = document.getElementById("senha-login").value
+    const email = document.getElementById("email_login").value
+    const senha = document.getElementById("senha_login").value
 
     fetch("http://localhost:8081/alunos/login", {
       method: "POST",
@@ -110,7 +103,7 @@ form_login.addEventListener("submit", async (e) => {
         }
         localStorage.setItem("tipo_usuario", 'aluno');
 
-        if(!data.personalId){
+        if (!data.personalId) {
           return window.location.href = "/personal/lista-personais.html"
         }
 
@@ -132,8 +125,7 @@ form_cadastro.addEventListener("submit", async (e) => {
   if (tipoUsuario === 'Personal') {
 
     const nome = document.getElementById("nome").value;
-    const idade = document.getElementById("idade").value;
-    const estado = document.getElementById("estado").value;
+    const dataNascimento = document.getElementById("data-nascimento").value;
     const cidade = document.getElementById("cidade").value;
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
@@ -144,6 +136,7 @@ form_cadastro.addEventListener("submit", async (e) => {
     const cref = document.getElementById("cref").value;
     const tipo_cobranca = document.getElementById("tipo-cobranca").value;
     const valor_cobranca = document.getElementById("valor-cobranca").value;
+    const informacoesAdicionais = document.getElementById("informacoesAdicionais").value;
 
     if (senha !== confirma_senha) {
       document.getElementById('error-message-cadastro').textContent = "As senhas não coincidem."
@@ -158,8 +151,7 @@ form_cadastro.addEventListener("submit", async (e) => {
       },
       body: JSON.stringify({
         nomeCompleto: nome,
-        idade: idade,
-        estado: estado,
+        dataNascimento: dataNascimento,
         cidade: cidade,
         email: email,
         senha: senha,
@@ -168,7 +160,8 @@ form_cadastro.addEventListener("submit", async (e) => {
         tempoExperiencia: tempo_experiencia,
         cref: cref,
         tipoCobranca: tipo_cobranca,
-        valorCobranca: valor_cobranca
+        valorCobranca: valor_cobranca,
+        informacoesAdicionais: informacoesAdicionais
       }),
     }).then((response) => response.json())
       .then(data => {
@@ -197,18 +190,19 @@ form_cadastro.addEventListener("submit", async (e) => {
   if (tipoUsuario === 'Aluno') {
 
     const nome = document.getElementById("nome").value;
-    const idade = document.getElementById("idade").value;
+    const dataNascimento = document.getElementById("data-nascimento").value;
     const peso = document.getElementById("peso").value;
     const altura = document.getElementById("altura").value;
-    const estado = document.getElementById("estado").value;
     const cidade = document.getElementById("cidade").value;
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
     const confirma_senha = document.getElementById("confirma-senha").value;
     const celular = document.getElementById("celular").value;
-    const tempo_treino = document.getElementById("tempo-treino").value;
     const frequenta_academia = document.getElementById("frequenta-academia").value;
 
+    if(frequenta_academia === ""){
+      return document.getElementById("error-message-cadastro").textContent = "O campo 'Frequenta academia' é obrigatório."
+    }
     if (senha !== confirma_senha) {
       document.getElementById('error-message-cadastro').textContent = "As senhas não coincidem."
       return;
@@ -222,16 +216,14 @@ form_cadastro.addEventListener("submit", async (e) => {
       },
       body: JSON.stringify({
         nomeCompleto: nome,
-        idade: idade,
+        dataNascimento: dataNascimento,
         peso: peso,
         altura: altura,
-        estado: estado,
         cidade: cidade,
         email: email,
         senha: senha,
         celular: celular,
         frequentaAcademia: frequenta_academia,
-        tempoTreino: tempo_treino
       }),
     }).then((response) => response.json())
       .then(data => {
