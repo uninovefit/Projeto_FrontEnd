@@ -17,7 +17,7 @@
 
     <main>
         <div class="search-box">
-            <input type="text" id="search" placeholder="Busque por CREF, estado ou cidade">
+            <input type="text" id="search" placeholder="Busque por CREF ou cidade">
             <button onclick="buscarPersonais()" class="btn">Buscar</button>
         </div>
 
@@ -32,7 +32,6 @@
                         <th>Tempo de experiência</th>
                         <th>Tipo de cobrança</th>
                         <th>Valor</th>
-                        <th>Estado</th>
                         <th>Cidade</th>
                         <th>Ações</th>
                     </tr>
@@ -121,9 +120,6 @@
             if (!isNaN(Number(termo))) {
                 // Se for número, buscar por CREF
                 query = `?cref=${termo}`;
-            } else if (termo.length === 2) {
-                // Se tiver 2 caracteres, buscar por estado
-                query = `?estado=${termo}`;
             } else if (termo.length > 2) {
                 // Se tiver mais de 2 caracteres, buscar por cidade
                 query = `?cidade=${termo}`;
@@ -176,9 +172,6 @@
                 const tdValor = document.createElement('td');
                 tdValor.textContent = personal.valorCobranca;
 
-                const tdEstado = document.createElement('td');
-                tdEstado.textContent = personal.estado;
-
                 const tdCidade = document.createElement('td');
                 tdCidade.textContent = personal.cidade;
 
@@ -202,14 +195,14 @@
                     dialog.appendChild(subtitulo);
 
                     const campos = [
-                        ["Idade", personal.idade],
-                        ["Estado", personal.estado],
+                        ["Idade", new Date().getFullYear() - new Date(personal.dataNascimento).getFullYear()],
                         ["Cidade", personal.cidade],
                         ["Formação", personal.formacao],
                         ["Tempo de experiência (anos)", personal.tempoExperiencia],
                         ["CREF", personal.cref],
                         ["Tipo de cobrança", personal.tipoCobranca],
-                        ["Valor da cobrança", personal.valorCobranca]
+                        ["Valor da cobrança", personal.valorCobranca],
+                        ["Informações adicionais", personal.informacoesAdicionais],
                     ];
 
                     const divCampos = document.createElement("div")
@@ -262,7 +255,6 @@
                 tr.appendChild(tdtempoExperiencia);
                 tr.appendChild(tdTipoCobranca);
                 tr.appendChild(tdValor);
-                tr.appendChild(tdEstado);
                 tr.appendChild(tdCidade);
                 tr.appendChild(tdAcoes);
 
