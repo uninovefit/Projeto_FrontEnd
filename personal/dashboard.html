@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UninoveFit - Personais</title>
+    <title>UninoveFit - alunos</title>
     <link rel="stylesheet" href="/assets/styles/global.css">
     <link rel="stylesheet" href="style.css">
     <script src="../loadHeader.js"></script>
@@ -12,28 +12,359 @@
 
 <body>
     <!-- Header -->
-    <header class="header" id="header">
-        <!-- Header é carregado a partir do script "loadHeader" -->
-    </header>
+    <header class="header" id="header"></header>
 
-    <!-- Quantidade de Alunos -->
-    <section class="alunos-quantidade">
-        <span>Quantidade de Alunos:</span>
-        <span class="numero">7</span>
-    </section>
+    <main>
+        <div class="lista-container">
+            <h2>Seus alunos</h2>
+            <table id="lista-alunos">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Idade</th>
+                        <th>Peso</th>
+                        <th>Altura</th>
+                        <th>IMC</th>
+                        <th>Cidade</th>
+                        <th>E-mail</th>
+                        <th>Celular</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
-    <!-- Lista de Alunos -->
-    <section class="lista-alunos">
-        <h2>Lista de Alunos</h2>
-        <ul>
-            <li>Adailton Santos <button>Ver Perfil</button></li>
-            <li>Albert Nauã <button>Ver Perfil</button></li>
-            <li>Cauê da Silva <button>Ver Perfil</button></li>
-            <li>Ester Miranda <button>Ver Perfil</button></li>
-            <li>Mateus Landim <button>Ver Perfil</button></li>
-            <li>Monique Barros <button>Ver Perfil</button></li>
-            <li>Rafael Fernandes <button>Ver Perfil</button></li>
-        </ul>
-    </section>
+            <!-- Modal para passar treino -->
+            <dialog class="passar-treino-aluno" id="passar-treino-aluno">
+                <h2>Passar Treino para Aluno</h2>
+                <br>
+                <form id="formTreino">
+
+                    <label for="nomeTreino">Nome do Treino</label>
+                    <input type="text" id="nomeTreino" placeholder="Ex: Treino A - Peito e Tríceps" required>
+
+                    <label for="exercicio">Exercício</label>
+                    <input type="text" id="exercicio" placeholder="Ex: Supino Reto" required>
+
+                    <label for="series">Séries</label>
+                    <input type="number" id="series" placeholder="Ex: 4" required>
+
+                    <label for="repeticoes">Repetições</label>
+                    <input type="number" id="repeticoes" placeholder="Ex: 12" required>
+
+                    <label for="descanso">Descanso (tempo em segundos)</label>
+                    <input type="number" id="descanso" placeholder="Ex: 60" required>
+
+                    <div class="botoes-modal">
+                        <button type="submit">Salvar Treino</button>
+                        <button type="button" id="fechar-modal-treino">Cancelar</button>
+                    </div>
+
+                    <p id="return-message-treinos"></p>
+                </form>
+            </dialog>
+
+            <!-- Modal para registrar progresso -->
+            <dialog class="registrar-progresso" id="registrar-progresso">
+                <h2>Registrar Progresso do Aluno</h2>
+                <br>
+                <form id="formProgresso">
+                    <input type="hidden" id="progressoIdAluno">
+
+                    <label for="novoPeso">Novo Peso (kg)</label>
+                    <input type="number" id="novoPeso" placeholder="Ex: 75" step="0.1" required>
+
+                    <div class="botoes-modal">
+                        <button type="submit">Salvar</button>
+                        <button type="button" id="fechar-modal-progresso">Cancelar</button>
+                    </div>
+
+                    <p id="return-message-progresso"></p>
+                </form>
+            </dialog>
+        </div>
+    </main>
+
+    <script>
+
+        if (!localStorage.getItem('tipo_usuario')) {
+            window.location.href = './login.html'
+        }
+
+        const alunoEditado = {}
+
+        async function carregarAlunos() {
+            try {
+                const resposta = await fetch("http://localhost:8081/alunos", {
+                    method: "GET",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                });
+                const response = await resposta.json();
+                if (response.message === 'Não autenticado.') {
+                    localStorage.removeItem('tipo_usuario')
+                    return window.location.href = "/"
+                }
+
+                const alunos = response;
+                if (alunos.length <= 0) {
+                    const lista = document.querySelector('.lista-container');
+                    const message = document.createElement('p');
+                    message.textContent = 'Nenhum aluno encontrado.';
+                    message.style.textAlign = 'center';
+                    message.style.padding = '20px';
+                    lista.appendChild(message);
+                    return;
+                }
+
+                listarAlunos(alunos);
+            } catch (erro) {
+                console.error("Erro ao carregar alunos:", erro);
+            }
+        }
+
+        function listarAlunos(alunos) {
+            const tbody = document.querySelector('#lista-alunos tbody');
+            tbody.innerHTML = '';
+
+            alunos.forEach(aluno => {
+
+                aluno.altura = Number(aluno.altura) / 100;
+
+                const imc = aluno.peso / (aluno.altura * aluno.altura)
+                aluno.imc = imc.toFixed(2)
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td>${aluno.nomeCompleto || '-'}</td>
+          <td>${new Date().getFullYear() - new Date(aluno.dataNascimento).getFullYear() || '-'}</td>
+          <td>${aluno.peso || '-'}</td>
+          <td>${aluno.altura || '-'}</td>
+          <td>${aluno.imc || '-'}</td>
+          <td>${aluno.cidade || '-'}</td>
+          <td>${aluno.email || '-'}</td>
+          <td>${aluno.celular || '-'}</td>
+          <td>
+            <button class="btn-passar-treino">Passar novo treino</button>
+            <button class="btn-registrar-progresso">Registrar progresso</button>
+          </td>
+        `;
+
+                const btnTreino = tr.querySelector('.btn-passar-treino');
+                const btnProgresso = tr.querySelector('.btn-registrar-progresso');
+
+                btnTreino.addEventListener('click', () => {
+                    alunoEditado.id = aluno.id;
+                });
+
+                btnProgresso.addEventListener('click', () => {
+                    alunoEditado.id = aluno.id;
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.btn-passar-treino').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modal = document.getElementById('passar-treino-aluno');
+                    modal.showModal();
+                });
+            });
+
+            document.querySelectorAll('.btn-registrar-progresso').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const nome = btn.dataset.nome;
+                    const peso = btn.dataset.peso;
+
+                    const modal = document.getElementById('registrar-progresso');
+                    document.getElementById('progressoIdAluno').value = id;
+                    document.getElementById('novoPeso').value = peso || '';
+                    modal.showModal();
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalTreino = document.getElementById('passar-treino-aluno');
+            const modalProgresso = document.getElementById('registrar-progresso');
+
+            document.getElementById('fechar-modal-treino').addEventListener('click', () => modalTreino.close());
+            document.getElementById('fechar-modal-progresso').addEventListener('click', () => modalProgresso.close());
+
+            document.getElementById('formTreino').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const nomeTreino = document.getElementById('nomeTreino').value
+                const exercicio = document.getElementById('exercicio').value
+                const series = document.getElementById('series').value
+                const repeticoes = document.getElementById('repeticoes').value
+                const descanso = document.getElementById('descanso').value
+
+                try {
+                    const res = await fetch(`http://localhost:8081/alunos/${alunoEditado.id}/treinos`, {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            nomeTreino: nomeTreino,
+                            exercicio: exercicio,
+                            series: series,
+                            repeticoes: repeticoes,
+                            descanso: descanso,
+                        }),
+                    })
+                    const response = await res.json()
+                    if (response.message && response.message.includes('Exercício adicionado ao treino com sucesso!')) {
+                        document.getElementById('return-message-treinos').textContent = 'Treino cadastrado com sucesso.'
+                        setTimeout(() => {
+                            modalTreino.close()
+                        }, 2000)
+                    }
+                } catch (err) {
+                    console.log(err)
+                    alert("Ocorreu um erro ao passar o treino para o aluno.")
+                }
+            });
+
+            document.getElementById('formProgresso').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const novoPeso = document.getElementById('novoPeso').value;
+
+                try {
+                    const res = await fetch(`http://localhost:8081/alunos/${alunoEditado.id}/progresso`, {
+                        method: "PATCH",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            novoPeso: novoPeso,
+                        }),
+                    })
+                    const response = await res.json()
+                    console.log(response)
+                    if (response.message && response.message.includes('Progresso registrado com sucesso!')) {
+                        document.getElementById('return-message-progresso').textContent = 'Progresso registrado com sucesso!'
+                        setTimeout(() => {
+                            modalProgresso.close();
+                            carregarAlunos()
+                        }, 2000)
+                    }
+                } catch (err) {
+                    console.log(err)
+                    alert("Ocorreu um erro ao registrar o progresso do aluno.")
+                }
+
+            });
+        });
+
+        carregarAlunos();
+    </script>
+
+    <style>
+        main {
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            margin-top: 130px;
+        }
+
+        .lista-container {
+            background-color: #f2f2f2;
+            color: black;
+            border-radius: 10px;
+            display: inline-block;
+            padding: 20px 40px;
+            text-align: center;
+        }
+
+        #lista-alunos {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #lista-alunos thead {
+            background-color: #6E9D88;
+            color: #fff;
+            text-align: center;
+        }
+
+        #lista-alunos th,
+        #lista-alunos td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        #lista-alunos tbody tr:hover {
+            background-color: #f3f9ff;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        button {
+            background-color: #6E9D88;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin: 2px;
+        }
+
+        button:hover {
+            background-color: #5a8874;
+        }
+
+        /* Modal */
+        dialog {
+            border: none;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        form input,
+        form select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .botoes-modal {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .botoes-modal button {
+            flex: 1;
+            margin: 0 5px;
+        }
+    </style>
 </body>
+
 </html>
