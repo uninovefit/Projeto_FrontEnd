@@ -27,27 +27,18 @@
               </select>
             </div>
 
-            <div class="login_personal">
+            <div class="login">
 
               <div class="input-group personais-only">
-                <input type="email" id="email_personal_login" placeholder="Digite seu email" />
+                <input type="email" id="email_login" placeholder="Digite seu email" />
               </div>
 
               <div class="input-group personais-only">
-                <input type="password" id="senha_personal_login" placeholder="Digite sua senha" />
+                <input type="password" id="senha_login" placeholder="Digite sua senha" />
               </div>
 
             </div>
 
-            <div class="login_aluno">
-              <div class="input-group alunos-only">
-                <input type="email" id="email-login" placeholder="Digite seu e-mail" />
-              </div>
-              <div class="input-group alunos-only">
-                <input type="password" id="senha-login" placeholder="Digite sua senha" />
-              </div>
-
-            </div>
             <p id="error-message-login"></p>
             <button type="submit" class="botao">Login</button>
           </form>
@@ -76,16 +67,14 @@
                 <input type="text" id="cref" placeholder="CREF" />
               </div>
               <div class="input-group">
-                <input type="number" id="idade" placeholder="Idade" required />
+                <label style="text-align: center;" for="data-nascimento">Data de nascimento</label>
+                <input type="date" id="data-nascimento" required />
               </div>
               <div class="input-group alunos-only">
                 <input type="number" step="0.1" id="peso" placeholder="Peso (kg)" />
               </div>
               <div class="input-group alunos-only">
                 <input type="number" step="0.01" id="altura" placeholder="Altura (m)" />
-              </div>
-              <div class="input-group">
-                <input type="text" id="estado" maxlength="2" placeholder="Estado (UF)" />
               </div>
               <div class="input-group">
                 <input type="text" id="cidade" placeholder="Cidade" required />
@@ -108,12 +97,12 @@
                 <label>Frequenta academia?</label>
                 <select id="frequenta-academia">
                   <option value="">Selecione</option>
-                  <option value="Sim">Sim</option>
-                  <option value="Não">Não</option>
+                  <option value="Não, sou iniciante">Não, sou iniciante</option>
+                  <option value="Sim, menos de 6 meses">Sim, menos de 6 meses</option>
+                  <option value="Sim, de 6 meses a 1 ano">Sim, de 6 meses a 1 ano</option>
+                  <option value="Sim, mais de um ano">Sim, mais de um ano</option>
+                  <option value="Sim, mais de 2 anos">Sim, mais de 2 anos</option>
                 </select>
-              </div>
-              <div class="input-group alunos-only">
-                <input type="text" id="tempo-treino" placeholder="Tempo de treino (ex: 4 meses)" />
               </div>
               <div class="input-group personais-only">
                 <input type="text" id="formacao-personal" placeholder="Formação" />
@@ -127,6 +116,11 @@
               <div class="input-group personais-only">
                 <input type="text" id="valor-cobranca" placeholder="Informe seu valor de cobança" />
               </div>
+
+              <div class="input-group personais-only">
+                <textarea rows="5" type="text" id="informacoesAdicionais" placeholder="Deixe que seus alunos te conheçam, conte mais sobre sua trajetória profissional e forma de atendimento."></textarea>
+              </div>
+
               <p id="error-message-cadastro"></p>
               <p id="success-message-cadastro"></p>
               <button type="submit" class="botao">Cadastrar</button>
@@ -151,17 +145,17 @@
       </div>
     </div>
   </section>
+  <script src="script.js"></script>
 
-  <script src="script.js" defer></script>
   <script>
 
-    addEventListener('DOMContentLoaded', function() {
+    addEventListener('DOMContentLoaded', function () {
 
-      if(localStorage.getItem("tipo_usuario") === 'aluno'){
+      if (localStorage.getItem("tipo_usuario") === 'aluno') {
         return window.location.href = "aluno/dashboard.html"
       }
 
-      if(localStorage.getItem("tipo_usuario") === 'personal'){
+      if (localStorage.getItem("tipo_usuario") === 'personal') {
         return window.location.href = "personal/dashboard.html"
       }
 
