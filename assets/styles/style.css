@@ -88,6 +88,11 @@
     margin-bottom: 5px;
 }
 
+option {
+    background-color: #222;
+    color: white;
+}
+
 .input-group label {
     text-align: left;
     margin-bottom: 5px;
@@ -96,11 +101,9 @@
     color: white;
 }
 
-input[type="email"],
-input[type="password"],
-input[type="text"],
-input[type="number"],
-select {
+input,
+select,
+textarea {
     padding: 10px 15px;
     border-radius: 20px;
     border: none;
@@ -231,4 +234,3 @@ button.ghost:hover {
     color: black !important;
     font-weight: 700;
 }
-
