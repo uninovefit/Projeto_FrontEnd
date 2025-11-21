@@ -72,7 +72,7 @@ form_login.addEventListener("submit", async (e) => {
           return;
         }
         if (data.message.includes("Login efetuado com sucesso.")) {
-          window.location.href = "/personal/dashboard.html"
+          window.location.href = "/personal/inicio.html"
           localStorage.setItem("tipo_usuario", 'personal');
           return;
         }
@@ -108,7 +108,7 @@ form_login.addEventListener("submit", async (e) => {
         }
 
 
-        return window.location.href = "/aluno/dashboard.html"
+        return window.location.href = "/aluno/inicio.html"
       });
   }
 });
