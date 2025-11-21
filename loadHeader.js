@@ -5,17 +5,17 @@ function loadHeader() {
   const tipoUsuario = localStorage.getItem('tipo_usuario');
   const caminhoAtual = window.location.pathname;
 
-  // Detecta se está na página inicial
   const isIndex = (caminhoAtual === '/' || caminhoAtual.endsWith('/index.html'));
 
   let conteudo = `
     <div class="image">
+    <a href="/">
       <img src="/assets/uninovefit.png" alt="Logo UninoveFit">
+    </a>
     </div>
     <div class="barra_superior">
   `;
 
-  // Caso esteja na index (visitante)
   if (isIndex || !tipoUsuario) {
     conteudo += `
       <a href="/index.html">Início</a>
@@ -25,20 +25,18 @@ function loadHeader() {
       <a href="/login.html" class="btn acesso" id="btn_acesso">Acessar</a>
     </div>
     `;
-  } 
+  }
   else if (tipoUsuario === 'personal') {
     conteudo += `
-      <a href="/index.html">Início</a>
-      <a href="/personal/dashboard.html">Dashboard</a>
+      <a href="/personal/dashboard.html">Meus alunos</a>
       <a href="/personal/perfil.html">Perfil</a>
       <a href="#" id="btn_sair">Sair</a>
     </div>
     `;
-  } 
+  }
   else if (tipoUsuario === 'aluno') {
     conteudo += `
-      <a href="/index.html">Início</a>
-      <a href="/aluno/dashboard.html">Dashboard</a>
+      <a href="/aluno/dashboard.html">Início</a>
       <a href="/aluno/treinos.html">Treinos</a>
       <a href="/aluno/perfil.html">Perfil</a>
       <a href="#" id="btn_sair">Sair</a>
@@ -48,7 +46,6 @@ function loadHeader() {
 
   header.innerHTML = conteudo;
 
-  // Função de sair
   const btnSair = document.getElementById('btn_sair');
   if (btnSair) {
     btnSair.addEventListener('click', () => {
@@ -58,5 +55,4 @@ function loadHeader() {
   }
 }
 
-// Executa automaticamente ao carregar
 document.addEventListener('DOMContentLoaded', loadHeader);
