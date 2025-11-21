@@ -9,23 +9,14 @@ body {
     background-color: #f8f8f8;
 }
 
-/* Quantidade de Alunos */
-.alunos-quantidade {
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 130px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-    border-radius: 25px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-weight: bold;
-    font-size: 18px;
+/* Lista de Alunos */
+
+/* Wrapper para scroll suave */
+.lista-scroll {
+    width: 100%;
+    overflow-x: auto;
 }
 
-/* Lista de Alunos */
 .lista-alunos {
     width: 50%;
     margin: 20px auto 40px auto;

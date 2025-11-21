@@ -19,20 +19,23 @@
     <main>
         <div class="lista-container">
             <h2>Lista de treinos</h2>
-            <table id="lista-treinos">
-                <thead>
-                    <tr>
-                        <th>Treino</th>
-                        <th>Exercício</th>
-                        <th>Séries</th>
-                        <th>Repetições</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- treinos serão inseridos aqui -->
-                </tbody>
-            </table>
+            <div class="lista-scroll">
+                <table id="lista-treinos">
+                    <thead>
+                        <tr>
+                            <th>Treino</th>
+                            <th>Exercício</th>
+                            <th>Séries</th>
+                            <th>Repetições</th>
+                            <th>Descanso (segundos)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- treinos serão inseridos aqui -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </body>
@@ -76,13 +79,16 @@
             marcarConcluido.textContent = "Marcar como feito";
             marcarConcluido.onclick = async () => {
                 if (confirm("Marcar este treino como feito?")) {
-                    const response = await fetch(`http://localhost:8081/alunos/me/treinos/${treino.id}`, {
+                    await fetch(`http://localhost:8081/alunos/me/treinos/${treino.id}`, {
                         method: "DELETE",
                         credentials: "include",
                         headers: {
                             "Content-Type": "application/json",
                         },
                     })
+
+                    const treinos = await buscarTreinos()
+                    listarTreinos(treinos)
                 }
             };
 
@@ -146,18 +152,25 @@
         width: 100%;
         color: black;
         margin-top: 130px;
-        margin-bottom: 0;
         background-color: #f2f2f2;
         border-radius: 10px;
-        display: inline-block;
-        padding: 20px 40px;
+        padding: 20px 20px;
         text-align: center;
+        overflow-x: auto;
+        /* importante para responsivo */
+    }
+
+    /* Wrapper para scroll suave */
+    .lista-scroll {
+        width: 100%;
+        overflow-x: auto;
     }
 
     #lista-treinos {
         width: 100%;
+        min-width: 650px;
+        /* garante tabela íntegra no mobile */
         border-collapse: collapse;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin-top: 20px;
         background-color: #fff;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -197,17 +210,20 @@
         text-align: center;
     }
 
+    /* Ajuste mobile */
     @media (max-width: 768px) {
+        .lista-container {
+            padding: 15px;
+        }
 
         #lista-treinos th,
         #lista-treinos td {
-            padding: 8px 10px;
+            padding: 10px 12px;
             font-size: 13px;
         }
     }
 
     .lista-container h2 {
-        margin-top: 0;
         margin-bottom: 20px;
     }
 </style>

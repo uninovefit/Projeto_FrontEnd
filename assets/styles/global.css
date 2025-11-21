@@ -128,7 +128,18 @@ menu {
     }
 }
 
+@media (max-width: 759px){
 
+    .card-personal {
+        max-width: revert;
+        overflow: scroll;
+    }
+
+    .card-content {
+        padding: 24px 0;
+    }
+
+}
 
 header {
   position: fixed;
@@ -181,9 +192,120 @@ header .btn.acesso {
   font-weight: 600;
   transition: background 0.3s, transform 0.3s;
   text-decoration: none;
+  text-align: center;
 }
 
 header .btn.acesso:hover {
   background-color: #777777; 
   transform: scale(1.05);
+}
+
+.menu-hamburguer {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-hamburguer div {
+  width: 28px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Menu mobile */
+.menu-mobile {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 250px;
+  height: 100%;
+  background: #003d2b;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 25px;
+  gap: 25px;
+  transition: right 0.4s;
+  z-index: 99;
+}
+
+.menu-mobile.open {
+  right: 0;
+}
+
+.menu-mobile a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.menu-mobile a:hover {
+  color: #00ffb3;
+}
+
+/* Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  z-index: 90;
+}
+
+.menu-overlay.active {
+  display: block;
+}
+
+/* Responsividade */
+
+@media (max-width: 535px) {
+  header {
+    padding: 15px 20px;
+  }
+
+  .barra_superior {
+    display: none!important;
+  }
+
+  .botoes {
+    display: none!important;
+  }
+
+  .menu-hamburguer {
+    display: flex;
+    z-index: 999;
+  }
+
+  header .image img {
+    width: 110px;
+  }
+}
+
+/* Animação do botão hambúrguer quando aberto */
+.menu-hamburguer.active div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 6px);
+}
+
+.menu-hamburguer.active div:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-hamburguer.active div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
+
+.menu-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 26px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
 }

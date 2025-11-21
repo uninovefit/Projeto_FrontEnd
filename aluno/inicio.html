@@ -163,8 +163,7 @@
         const campos = [
             ["E-mail", detalhesPersonal.email],
             ["Celular", detalhesPersonal.celular],
-            ["Idade", detalhesPersonal.idade],
-            ["Estado", detalhesPersonal.estado],
+            ["Idade", new Date().getFullYear() - new Date(detalhesPersonal.dataNascimento).getFullYear()],
             ["Cidade", detalhesPersonal.cidade],
             ["Formação", detalhesPersonal.formacao],
             ["Tempo de experiência (anos)", detalhesPersonal.tempoExperiencia],

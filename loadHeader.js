@@ -28,31 +28,74 @@ function loadHeader() {
   }
   else if (tipoUsuario === 'personal') {
     conteudo += `
-      <a href="/personal/dashboard.html">Meus alunos</a>
+      <a href="/personal/inicio.html">Meus alunos</a>
       <a href="/personal/perfil.html">Perfil</a>
-      <a href="#" id="btn_sair">Sair</a>
+      <a href="#" class="btn_sair">Sair</a>
     </div>
     `;
   }
   else if (tipoUsuario === 'aluno') {
     conteudo += `
-      <a href="/aluno/dashboard.html">Início</a>
+      <a href="/aluno/inicio.html">Início</a>
       <a href="/aluno/treinos.html">Treinos</a>
       <a href="/aluno/perfil.html">Perfil</a>
-      <a href="#" id="btn_sair">Sair</a>
+      <a href="#" class="btn_sair">Sair</a>
     </div>
     `;
   }
 
   header.innerHTML = conteudo;
 
-  const btnSair = document.getElementById('btn_sair');
-  if (btnSair) {
-    btnSair.addEventListener('click', () => {
-      localStorage.removeItem('tipo_usuario');
-      window.location.href = '/index.html';
-    });
-  }
+
+  
 }
 
-document.addEventListener('DOMContentLoaded', loadHeader);
+document.addEventListener("DOMContentLoaded", () => {
+
+
+  loadHeader()
+  const header = document.getElementById("header");
+
+  // Adiciona elementos do menu mobile
+  const menuHamb = document.createElement("div");
+  menuHamb.className = "menu-hamburguer";
+  menuHamb.innerHTML = `
+    <div></div>
+    <div></div>
+    <div></div>
+  `;
+  header.appendChild(menuHamb);
+
+  const menuMobile = document.createElement("div");
+  menuMobile.className = "menu-mobile";
+  header.appendChild(menuMobile);
+
+  function atualizarMenuMobile() {
+    const links = header.querySelectorAll(".barra_superior a, .botoes a");
+    menuMobile.innerHTML = "";
+    links.forEach(link => {
+      menuMobile.appendChild(link.cloneNode(true));
+    });
+  }
+
+  atualizarMenuMobile();
+
+  function toggleMenu() {
+    const isOpen = menuMobile.classList.contains("open");
+
+    menuMobile.classList.toggle("open", !isOpen);
+    menuHamb.classList.toggle("active", !isOpen);
+  }
+
+  menuHamb.addEventListener("click", toggleMenu);
+
+  const btnSair = document.querySelectorAll('.btn_sair');
+  if (btnSair[0]) {
+    btnSair.forEach(el => {
+      el.addEventListener('click', () => {
+        localStorage.removeItem('tipo_usuario');
+        window.location.href = '/index.html';
+      })
+    })
+  }
+});

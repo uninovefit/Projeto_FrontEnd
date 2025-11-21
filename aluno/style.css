@@ -246,3 +246,157 @@ main {
     width: 100%;
     overflow: hidden
 }
+
+@media (max-width: 1024px) {
+
+    main {
+        padding: 20px 25px;
+    }
+
+    .personal-header {
+        padding: 0 20px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .cards-container {
+        gap: 60px;
+    }
+
+    .progresso-cards-container {
+        gap: 40px;
+        padding: 40px 30px;
+        flex-direction: column;
+        max-width: 700px;
+    }
+
+    .progresso-card {
+        width: 100%;
+    }
+}
+
+
+/* ----- Celulares grandes (até 768px) ----- */
+@media (max-width: 768px) {
+
+    main {
+        padding: 15px 20px;
+    }
+
+    .personal-header {
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    /* Cards Peso / Água */
+    .cards-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        margin-top: 25px;
+    }
+
+    .card {
+        width: 90%;
+        max-width: 330px;
+        justify-content: center;
+    }
+
+    .icon-wrapper {
+        min-width: 45px;
+        height: 45px;
+        padding: 8px;
+    }
+
+    .icon-wrapper i {
+        font-size: 38px;
+    }
+
+    /* Botão treinos */
+    .btn-treinos {
+        width: 90%;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* Seção Progresso */
+    .metas-progresso {
+        padding: 0 20px;
+    }
+
+    .progresso-cards-container {
+        padding: 30px 20px;
+        gap: 25px;
+    }
+
+    .progresso-card .treino {
+        padding: 40px 20px;
+    }
+}
+
+
+/* ----- Celulares pequenos (até 480px) ----- */
+@media (max-width: 480px) {
+
+    main {
+        padding: 10px 15px;
+    }
+
+    h2, h3 {
+        font-size: 16px;
+    }
+
+    .personal-header button {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+
+    .cards-container {
+        gap: 20px;
+    }
+
+    .card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .icon-wrapper {
+        min-width: 40px;
+        height: 40px;
+    }
+
+    .icon-wrapper i {
+        font-size: 32px;
+    }
+
+    .btn-treinos {
+        padding: 10px;
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    .progresso-cards-container {
+        padding: 20px 15px;
+    }
+
+    .progresso-card h3 {
+        font-size: 16px;
+    }
+
+    .progresso-card .treino {
+        padding: 30px 15px;
+        font-size: 14px;
+    }
+
+    /* Modal */
+    .modal-consumoAgua {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .modal-actions button {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+}
