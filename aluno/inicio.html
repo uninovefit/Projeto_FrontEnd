@@ -59,34 +59,18 @@
 
         </div>
 
-        <button class="btn-treinos">
-            Ir para treinos
-        </button>
+        <a href="treinos.html" class="btn-treinos">
+            <p>Ir para treinos</p>
+        </a>
 
     </main>
 
     <section class="metas-progresso">
 
-        <div class="section-title-bar">
-            <h2>Metas e Progresso</h2>
-        </div>
-
         <div class="progresso-cards-container">
-
-            <div class="progresso-card historico">
-                <h3>Histórico de Treinos</h3>
-                <div class="inner-content">
-                    <button class="btn-historico">
-                        Ver histórico completo
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-
             <div class="progresso-card proximos">
-                <h3>Próximos treinos</h3>
-                <div class="inner-content">
-                    <p>Treino de Bíceps - 15/09 às 15h</p>
+                <h3>Próximo treino</h3>
+                <div class="treino" id="treino">
                 </div>
             </div>
         </div>
@@ -111,11 +95,11 @@
             </form>
         </dialog>
 
-       
+
 
     </section>
-     <dialog class="card-personal" id="detalhes-personal">
-        </dialog>
+    <dialog class="card-personal" id="detalhes-personal">
+    </dialog>
 
 </body>
 <script>
@@ -125,7 +109,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
 
         const dadosAluno = await buscarDadosPerfilAluno()
-        if(!dadosAluno.personal){
+        if (!dadosAluno.personal) {
             window.location.href = '/personal/lista-personais.html'
         }
 
@@ -133,6 +117,8 @@
         document.getElementById('personal').textContent = 'Personal: ' + dadosAluno.personal.nomeCompleto
         document.getElementById('peso').textContent = dadosAluno.peso + ' kg'
         document.getElementById('consumoAgua').textContent = dadosAluno.consumoAgua + ' ml'
+
+        carregarProximoTreino()
     })
 
     async function buscarDadosPerfilAluno() {
@@ -271,6 +257,29 @@
         }, 1000)
 
     })
+
+    async function carregarProximoTreino() {
+
+        try {
+
+            const res = await fetch('http://localhost:8081/alunos/me/treinos', {
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+
+            const response = await res.json()
+            if(response.message){
+                return document.getElementById('treino').textContent = 'Nenhum treino adicionado.'
+            }
+            document.getElementById('treino').textContent = `${response[0].nomeTreino} | ${response[0].exercicio}`
+
+        } catch (err) {
+            document.getElementById('treino').textContent = 'Nenhum treino adicionado.'
+        }
+
+    }
 
 </script>
 
