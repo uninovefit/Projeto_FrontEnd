@@ -113,10 +113,11 @@ main {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 30px;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 40px auto 0 auto;
+    text-decoration: none;
+    text-align: center;
+    width: fit-content;
 }
 
 .btn-treinos:hover {
@@ -180,8 +181,9 @@ main {
     padding: 18px 0 6px 0;
 }
 
-.progresso-card .inner-content {
+.progresso-card .treino {
     background-color: #eaeaea;
+    color: black;
     border-radius: 14px;
     padding: 77px 28px;
     width: 100%;

@@ -120,7 +120,7 @@
             if (res.message && res.message === 'Nenhum treino encontrado para este aluno.') {
                 const lista = document.querySelector('.lista-container');
                 const message = document.createElement('p');
-                message.textContent = res.message;
+                message.textContent = 'Nenhum treino encontrado.';
                 message.style.textAlign = 'center';
                 message.style.padding = '20px';
                 lista.appendChild(message);
