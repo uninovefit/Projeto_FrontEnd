@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets//styles//global.css">
+    <title>UNINOVEFIT - Perfil</title>
+    <script src="../loadHeader.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- Header é carregado a partir do script "loadHeader" -->
+    </header>
+
+    <div class="container">
+        <h2>Atualizar perfil</h2>
+
+        <form id="formDados">
+            <label>Nome completo</label>
+            <input type="text" id="nome" required>
+
+            <label>Data de nascimento</label>
+            <input type="date" id="dataNascimento" required>
+
+            <label>Altura (cm)</label>
+            <input type="number" id="altura" required>
+
+            <label>Cidade</label>
+            <input type="text" id="cidade" required>
+
+            <label>Email</label>
+            <input type="email" id="email" required>
+
+            <label>Celular</label>
+            <input type="text" id="celular" required>
+
+            <button type="submit">Atualizar Informações</button>
+            <p id="return-message" style="color: black; text-align: center; margin: 10px 0;"></p>
+        </form>
+
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await buscarDadosAluno()
+        })
+
+        const form = document.getElementById('formDados');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const dados = {
+                nomeCompleto: document.getElementById('nome').value,
+                dataNascimento: document.getElementById('dataNascimento').value,
+                altura: document.getElementById('altura').value,
+                cidade: document.getElementById('cidade').value,
+                email: document.getElementById('email').value,
+                celular: document.getElementById('celular').value,
+            };
+
+            try {
+
+                const res = await fetch('http://localhost:8081/alunos/me', {
+                    method: 'PATCH',
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                })
+
+                const response = await res.json()
+                document.getElementById('return-message').textContent = 'Dados atualizados com sucesso.'
+
+            } catch (err) {
+                console.log(err)
+                document.getElementById('return-message').textContent = 'Ocorreu um erro inesperado.'
+            }
+
+        });
+
+        async function buscarDadosAluno() {
+
+            const response = await fetch('http://localhost:8081/alunos/me', {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            const res = await response.json()
+
+            if (response.ok) {
+                document.getElementById('nome').value = res.nomeCompleto
+                document.getElementById('dataNascimento').value = res.dataNascimento
+                document.getElementById('altura').value = res.altura
+                document.getElementById('cidade').value = res.cidade
+                document.getElementById('email').value = res.email
+                document.getElementById('celular').value = res.celular
+            }
+
+            if (!response.ok && res.error || !response.ok && res.message) {
+
+                if (res.message && res.message === 'Não autenticado.') {
+                    localStorage.removeItem('tipo_usuario')
+                    return window.location.href = '/'
+                }
+
+                return alert("Ocorreu um erro inesperado.")
+
+            }
+
+            return res;
+
+        }
+
+    </script>
+</body>
+<style>
+    .container {
+        max-width: 800px;
+        margin: 140px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #0b3d2e;
+    }
+
+    label {
+        font-weight: bold;
+        color: #0b3d2e;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 20px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+    }
+
+    button {
+        background-color: #2e7d58;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #256648;
+    }
+
+    .resultado {
+        margin-top: 25px;
+        padding: 20px;
+        background: #e9f4ee;
+        border-left: 5px solid #2e7d58;
+        border-radius: 8px;
+    }
+</style>
+
+</html>
